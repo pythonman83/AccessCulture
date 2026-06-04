@@ -1,0 +1,3471 @@
+<!DOCTYPE html>
+<html lang="fr" data-bs-theme="light" dir="ltr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="color-scheme" content="light dark">
+  <meta name="theme-color" content="#46214c" media="(prefers-color-scheme: light)">
+  <meta name="theme-color" content="#160b1c" media="(prefers-color-scheme: dark)">
+  <meta name="description" content="AccessCulture : plateforme communautaire et solidaire où les personnes en situation de handicap partagent leurs avis sur l'accessibilité des théâtres, musées, expositions et autres lieux de culture, ville par ville. Avis, photos, échanges et entraide.">
+  <meta name="author" content="AccessCulture">
+  <meta name="robots" content="index, follow">
+  <meta property="og:title" content="AccessCulture — l'accessibilité des lieux de culture racontée par celles et ceux qui les vivent">
+  <meta property="og:description" content="Partagez et consultez des avis sur l'accessibilité des théâtres, musées, expositions et autres lieux de culture, ville par ville.">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  
+
+  <!-- Favicon SVG en ligne : évite toute requête 404 dans la console -->
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%2346214c'/%3E%3Ccircle cx='32' cy='19' r='8' fill='%23f2b441'/%3E%3Cpath d='M16 52c0-9 7-16 16-16s16 7 16 16' fill='none' stroke='%23f2b441' stroke-width='5' stroke-linecap='round'/%3E%3C/svg%3E">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400;1,700&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+
+  <title>AccessCulture — Avis d'accessibilité des lieux de culture, ville par ville</title>
+
+  <style>
+    /* Police mono pour l'horloge / la température (chargée sans toucher au <head>) */
+    @import url("https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&display=swap");
+
+    /* ===================================================================
+       PALETTE & VARIABLES — direction premium « luxe civique »
+       Bleu océan + vert émeraude (cohérent avec le logo) + éclat doré.
+       Contrastes maintenus WCAG AA/AAA (clair + sombre).
+       =================================================================== */
+    :root {
+      --acc-font-body: "Atkinson Hyperlegible", system-ui, sans-serif;
+      --acc-font-display: "Fraunces", Georgia, serif;
+      --acc-font-mono: "JetBrains Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+      --acc-bg: #eef2f7;
+      --acc-bg-soft: #e2e9f2;
+      --acc-surface: #ffffff;
+      --acc-surface-2: #f4f7fb;
+      --acc-text: #11202f;          /* ~15:1 sur --acc-bg */
+      --acc-text-soft: #43566b;     /* ~7.4:1 sur --acc-surface */
+      --acc-border: #d3dde8;
+      --acc-primary: #6a2c70;       /* aubergine théâtral */
+      --acc-primary-strong: #46214c;
+      --acc-on-primary: #ffffff;
+      --acc-accent: #8a5a00;        /* or foncé : ~5.3:1 pour le texte */
+      --acc-accent-bright: #f2b441; /* or vif : décoratif / fond foncé */
+      --acc-green: #1c7a45;         /* vert émeraude : ~5:1 pour le texte */
+      --acc-green-bright: #2faa5e;  /* vert vif : décoratif */
+      --acc-link: #6e1f77;          /* prune profond ~8.8:1 sur fond clair */
+      --acc-success: #1c6b3a;
+      --acc-danger: #a4232b;
+      --acc-pos-bg: #e2f4ea;
+      --acc-pos-text: #114a28;
+      --acc-neg-bg: #fbe6e6;
+      --acc-neg-text: #8a1c23;
+      --acc-focus: #0a5bd3;
+
+      /* Ombres premium en couches teintées */
+      --acc-shadow: 0 1px 2px rgba(13,63,112,.06), 0 8px 24px -8px rgba(13,63,112,.18);
+      --acc-shadow-lg: 0 4px 8px rgba(13,63,112,.08), 0 24px 56px -16px rgba(13,63,112,.28);
+      --acc-radius: 1.1rem;
+      --acc-radius-sm: .65rem;
+      --acc-ring: 0 0 0 1px rgba(13,63,112,.05);
+
+      /* Dégradés signature */
+      --acc-grad-brand: linear-gradient(135deg, #5b2a6e 0%, #3f1f52 45%, #15734a 100%);
+      --acc-grad-gold: linear-gradient(120deg, #f2b441, #d9952b);
+
+      /* Transition globale */
+      --transition: .26s cubic-bezier(.22,.61,.36,1);
+
+      /* --- Alias pour les composants pré-existants (pills, scrollbar) --- */
+      --gold: var(--acc-accent-bright);
+      --bg-card: var(--acc-surface);
+      --border-color: var(--acc-border);
+      --border-glass: color-mix(in srgb, var(--acc-border) 72%, transparent);
+      --text-primary: var(--acc-text);
+      --text-secondary: var(--acc-text-soft);
+      --text-muted: var(--acc-text-soft);
+      --ps-cyan: #0b6f80;
+      --ps-green: var(--acc-green-bright);
+      --ps-blue-deep: var(--acc-primary);
+      --scrollbar-track: var(--acc-bg-soft);
+      --scrollbar-thumb: var(--acc-primary);
+      --scrollbar-thumb-hover: var(--acc-primary-strong);
+    }
+
+    [data-bs-theme="dark"] {
+      --acc-bg: #0a111d;
+      --acc-bg-soft: #101a2a;
+      --acc-surface: #15202f;
+      --acc-surface-2: #1b2839;
+      --acc-text: #f1ede3;
+      --acc-text-soft: #c2ccda;     /* ~8:1 sur --acc-surface */
+      --acc-border: #2d3c52;
+      --acc-primary: #cb9bd9;       /* orchidée claire lisible sur sombre */
+      --acc-primary-strong: #dab3e6;
+      --acc-on-primary: #06101d;
+      --acc-accent: #f2c265;
+      --acc-accent-bright: #f2b441;
+      --acc-green: #5ad08c;
+      --acc-green-bright: #3fc079;
+      --acc-link: #d7a9e6;
+      --acc-success: #56c98a;
+      --acc-danger: #ff8a90;
+      --acc-pos-bg: #11321f;
+      --acc-pos-text: #b7ecca;
+      --acc-neg-bg: #3a1416;
+      --acc-neg-text: #ffc3c6;
+      --acc-focus: #8fc1ff;
+
+      --acc-shadow: 0 1px 2px rgba(0,0,0,.5), 0 10px 30px -10px rgba(0,0,0,.65);
+      --acc-shadow-lg: 0 6px 14px rgba(0,0,0,.45), 0 28px 64px -18px rgba(0,0,0,.8);
+      --acc-ring: 0 0 0 1px rgba(255,255,255,.04);
+
+      --acc-grad-brand: linear-gradient(135deg, #4a2359 0%, #341a45 45%, #155f3f 100%);
+
+      --ps-cyan: #4fd6e8;
+      --border-glass: color-mix(in srgb, var(--acc-border) 85%, transparent);
+    }
+
+    /* ===================================================================
+       BASE — taille de texte minimale 1rem partout
+       =================================================================== */
+    /* Dimensions prévisibles : la largeur/hauteur inclut padding et bordure */
+    *, *::before, *::after { box-sizing: border-box; }
+    html { font-size: 100%; -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+    body {
+      font-family: var(--acc-font-body);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      color: var(--acc-text);
+      background-color: var(--acc-bg);
+      background-image:
+        radial-gradient(48rem 38rem at 88% -8%, color-mix(in srgb, var(--acc-primary) 16%, transparent), transparent 60%),
+        radial-gradient(42rem 34rem at -6% 8%, color-mix(in srgb, var(--acc-green-bright) 14%, transparent), transparent 58%),
+        radial-gradient(50rem 50rem at 50% 116%, color-mix(in srgb, var(--acc-accent-bright) 10%, transparent), transparent 60%);
+      background-attachment: fixed;
+      min-height: 100vh;
+      overflow-wrap: break-word;
+      transition: background-color .35s ease, color .35s ease;
+      position: relative;
+    }
+    /* Grain fin pour la profondeur (décoratif, n'altère pas la lisibilité) */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      pointer-events: none;
+      opacity: .035;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+    }
+    [data-bs-theme="dark"] body::before { opacity: .06; }
+
+    /* Aucun texte sous 1rem (exigence stricte) */
+    small, .small, .form-text, .nav-link, .dropdown-item, .btn,
+    figcaption, .badge, label, input, select, textarea, button,
+    .breadcrumb, .alert, .card-text, .list-group-item, td, th,
+    .navbar-brand, p, li, a, span:not(.bi) { font-size: 1.05rem; }
+    body, .lead { font-size: 1.0625rem; }
+    .text-min { font-size: 1.05rem; }
+
+    h1, h2, h3, h4, h5, h6, .display-1, .display-2, .display-3 {
+      font-family: var(--acc-font-display);
+      font-weight: 600;
+      line-height: 1.16;
+      letter-spacing: -.015em;
+      color: var(--acc-text);
+    }
+    h1, .h1 { font-size: clamp(1.95rem, 5vw, 3.1rem); }
+    h2, .h2 { font-size: clamp(1.6rem, 3.5vw, 2.15rem); }
+    h3, .h3 { font-size: clamp(1.3rem, 2.5vw, 1.62rem); }
+
+    a { color: var(--acc-link); text-underline-offset: .18em; text-decoration-thickness: .08em; transition: color var(--transition); }
+    a:hover { color: var(--acc-primary-strong); }
+
+    /* Focus visible et net pour la navigation clavier.
+       Liste explicite d'éléments interactifs : la spécificité (et l'ordre source,
+       après Bootstrap) suffit à imposer le contour, sans surcharge forcée. */
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible,
+    textarea:focus-visible, summary:focus-visible, [tabindex]:focus-visible,
+    .btn:focus-visible, .nav-link:focus-visible, .form-control:focus-visible,
+    .form-select:focus-visible, .page-link:focus-visible, .dropdown-item:focus-visible {
+      outline: 3px solid var(--acc-focus);
+      outline-offset: 2px;
+      border-radius: 4px;
+    }
+
+    /* ===================================================================
+       LIEN D'ÉVITEMENT (skip link)
+       =================================================================== */
+    .skip-link {
+      position: absolute;
+      left: 1rem;
+      top: -10rem;
+      z-index: 2000;
+      background: var(--acc-primary);
+      color: var(--acc-on-primary);
+      padding: .75rem 1.25rem;
+      border-radius: .6rem;
+      font-weight: 700;
+      box-shadow: var(--acc-shadow-lg);
+      transition: top .2s ease;
+    }
+    .skip-link:focus { top: 1rem; color: var(--acc-on-primary); }
+
+    /* ===================================================================
+       EN-TÊTE / NAVIGATION — verre premium + filet dégradé
+       =================================================================== */
+    .acc-navbar {
+      background: color-mix(in srgb, var(--acc-surface) 82%, transparent);
+      -webkit-backdrop-filter: saturate(180%) blur(16px);
+      backdrop-filter: saturate(180%) blur(16px);
+      border-bottom: 1px solid color-mix(in srgb, var(--acc-border) 80%, transparent);
+      box-shadow: 0 6px 28px -18px rgba(13,63,112,.5);
+      position: relative;
+    }
+    /* Filet dégradé bleu→vert→or sous la barre */
+    .acc-navbar::after {
+      content: "";
+      position: absolute; left: 0; right: 0; bottom: -1px; height: 2px;
+      background: linear-gradient(90deg, var(--acc-primary), var(--acc-green-bright) 55%, var(--acc-accent-bright));
+      opacity: .85;
+    }
+    /* Menu déroulé sur petits écrans : fond plein et lisible */
+    @media (max-width: 991.98px) {
+      .acc-navbar .navbar-collapse {
+        background: var(--acc-surface);
+        border: 1px solid var(--acc-border);
+        border-radius: 0 0 1rem 1rem;
+        margin-top: .75rem;
+        padding: .85rem;
+        box-shadow: var(--acc-shadow);
+      }
+      .acc-navbar .navbar-collapse .nav-link { padding: .65rem .85rem; }
+    }
+    .acc-brand {
+      font-family: var(--acc-font-display);
+      font-weight: 700;
+      font-size: 1.42rem;
+      color: var(--acc-text);
+      display: inline-flex;
+      align-items: center;
+      gap: .7rem;
+      text-decoration: none;
+      letter-spacing: -.01em;
+    }
+    .acc-brand:hover { color: var(--acc-text); }
+    .acc-brand:hover .acc-brand-logo { transform: rotate(-4deg) scale(1.05); box-shadow: 0 6px 18px -4px color-mix(in srgb, var(--acc-green-bright) 55%, transparent); }
+    /* On masque l'ancienne icône : le logo image porte la marque */
+    .acc-brand .bi { display: none; }
+    /* Logo image dans l'en-tête */
+    .acc-brand-logo {
+      width: 3rem; height: 3rem;
+      flex: 0 0 3rem;
+      border-radius: 50%;
+      object-fit: cover;
+      background: #fff;
+      padding: 2px;
+      box-shadow: 0 4px 14px -4px rgba(13,63,112,.45), var(--acc-ring);
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .acc-brand-logo{
+    width:48px;
+    height:48px;
+    object-fit:contain;
+    display:block;
+}
+    
+    /* Le mot-symbole : « Accès » bleu, « Communauté » vert — fidèle au logo */
+    .acc-brand span {
+      background: linear-gradient(95deg, var(--acc-primary) 0%, var(--acc-primary) 38%, var(--acc-green) 62%, var(--acc-green) 100%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent; color: transparent;
+    }
+    [data-bs-theme="dark"] .acc-brand span {
+      background: linear-gradient(95deg, var(--acc-primary-strong), var(--acc-green-bright));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .navbar .nav-link {
+      color: var(--acc-text-soft); font-weight: 700; border-radius: .55rem; padding: .5rem .85rem;
+      position: relative; transition: color var(--transition), background var(--transition);
+    }
+    .navbar .nav-link::after {
+      content: ""; position: absolute; left: .85rem; right: .85rem; bottom: .3rem; height: 2px;
+      background: var(--acc-green-bright); border-radius: 2px;
+      transform: scaleX(0); transform-origin: left; transition: transform var(--transition);
+    }
+    .navbar .nav-link:hover { color: var(--acc-text); background: var(--acc-bg-soft); }
+    .navbar .nav-link:hover::after { transform: scaleX(1); }
+    .navbar .nav-link.active { color: var(--acc-on-primary); background: var(--acc-primary); box-shadow: 0 6px 16px -8px var(--acc-primary); }
+    .navbar .nav-link.active::after { transform: scaleX(0); }
+
+    /* ===================================================================
+       BOUTONS — premium, sheen au survol, micro-lift
+       =================================================================== */
+    .btn {
+      font-weight: 700; border-radius: .6rem; padding: .58rem 1.15rem; min-height: 2.75rem;
+      position: relative; overflow: hidden; isolation: isolate;
+      transition: transform var(--transition), box-shadow var(--transition), background var(--transition), filter var(--transition), color var(--transition), border-color var(--transition);
+    }
+    .btn::before {
+      content: ""; position: absolute; inset: 0; z-index: -1;
+      background: linear-gradient(110deg, transparent 30%, rgba(255,255,255,.28) 50%, transparent 70%);
+      transform: translateX(-120%);
+      transition: transform .6s ease;
+    }
+    .btn:hover::before { transform: translateX(120%); }
+    .btn:active { transform: translateY(1px); }
+    .btn-acc-primary {
+      background: var(--acc-primary); color: var(--acc-on-primary); border: 1px solid var(--acc-primary);
+      box-shadow: 0 8px 20px -10px var(--acc-primary);
+    }
+    .btn-acc-primary:hover, .btn-acc-primary:focus {
+      background: var(--acc-primary-strong); color: var(--acc-on-primary); border-color: var(--acc-primary-strong);
+      transform: translateY(-2px); box-shadow: 0 14px 28px -12px var(--acc-primary);
+    }
+    .btn-acc-outline { background: transparent; color: var(--acc-link); border: 2px solid var(--acc-primary); }
+    .btn-acc-outline:hover, .btn-acc-outline:focus { background: var(--acc-primary); color: var(--acc-on-primary); transform: translateY(-2px); box-shadow: 0 12px 24px -12px var(--acc-primary); }
+    .btn-acc-ghost { background: var(--acc-bg-soft); color: var(--acc-text); border: 1px solid var(--acc-border); }
+    .btn-acc-ghost:hover, .btn-acc-ghost:focus { background: var(--acc-border); color: var(--acc-text); transform: translateY(-2px); }
+    .btn-acc-danger { background: var(--acc-danger); color: #fff; border: 1px solid var(--acc-danger); }
+    [data-bs-theme="dark"] .btn-acc-danger { color: #1a0506; }
+    .btn-acc-danger:hover, .btn-acc-danger:focus { filter: brightness(1.08); transform: translateY(-2px); }
+
+    /* Icône-bouton (thème, etc.) */
+    .icon-btn {
+      width: 2.85rem; height: 2.85rem;
+      display: inline-flex; align-items: center; justify-content: center;
+      border-radius: 50%;
+      border: 1px solid var(--acc-border);
+      background: var(--acc-surface);
+      color: var(--acc-text);
+      font-size: 1.25rem;
+      box-shadow: var(--acc-shadow);
+      transition: transform var(--transition), background var(--transition), color var(--transition), box-shadow var(--transition);
+    }
+    .icon-btn:hover, .icon-btn:focus { background: var(--acc-bg-soft); color: var(--acc-accent); transform: translateY(-2px) rotate(-8deg); }
+
+    /* ===================================================================
+       CARTES / SURFACES — relief, lift au survol, liseré supérieur
+       =================================================================== */
+    .acc-card {
+      background: var(--acc-surface);
+      border: 1px solid var(--acc-border);
+      border-radius: var(--acc-radius);
+      box-shadow: var(--acc-shadow);
+      position: relative;
+      overflow: hidden;
+      transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+      animation: acc-rise .5s cubic-bezier(.22,.61,.36,1) both;
+    }
+    .acc-card::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(90deg, var(--acc-primary), var(--acc-green-bright) 60%, var(--acc-accent-bright));
+      opacity: 0; transition: opacity var(--transition);
+    }
+    .acc-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--acc-shadow-lg);
+      border-color: color-mix(in srgb, var(--acc-primary) 35%, var(--acc-border));
+    }
+
+    
+    .acc-card:hover::before { opacity: 1; }
+    .acc-card .card-body { padding: clamp(1.1rem, 3vw, 1.85rem); }
+
+    .acc-hero {
+      background: var(--acc-grad-brand);
+      color: #fff;
+      border-radius: calc(var(--acc-radius) + .35rem);
+      padding: clamp(1.6rem, 5vw, 3.25rem);
+      box-shadow: var(--acc-shadow-lg);
+      position: relative;
+      overflow: hidden;
+      isolation: isolate;
+      animation: acc-rise .55s cubic-bezier(.22,.61,.36,1) both;
+    }
+    /* Halo doré + grain sur le héros */
+    .acc-hero::before {
+      content: ""; position: absolute; z-index: -1; inset: -40% -10% auto auto;
+      width: 32rem; height: 32rem; border-radius: 50%;
+      background: radial-gradient(circle, color-mix(in srgb, var(--acc-accent-bright) 55%, transparent), transparent 62%);
+      filter: blur(8px);
+    }
+    .acc-hero::after {
+      content: ""; position: absolute; z-index: -1; inset: 0; opacity: .08;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='m'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23m)'/%3E%3C/svg%3E");
+    }
+    .acc-hero .view-title, .acc-hero p { color: #fff; }
+    .acc-hero .view-title { text-shadow: 0 2px 20px rgba(0,0,0,.18); }
+    .acc-hero .badge-soft {
+      background: rgba(255,255,255,.16);
+      color: #fff;
+      border: 1px solid rgba(255,255,255,.4);
+      -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+    }
+
+    @keyframes acc-rise {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    
+
+    /* Badges thématiques */
+    .badge-pill {
+      display: inline-flex; align-items: center; gap: .35rem;
+      padding: .42rem .8rem; border-radius: 2rem; font-weight: 700;
+      background: var(--acc-bg-soft); color: var(--acc-text);
+      border: 1px solid var(--acc-border);
+    }
+    .badge-city {
+      background: var(--acc-primary); color: var(--acc-on-primary);
+      border-color: var(--acc-primary);
+      box-shadow: 0 6px 16px -8px var(--acc-primary);
+    }
+    .badge-soft { background: var(--acc-bg-soft); color: var(--acc-text); border: 1px solid var(--acc-border); }
+    /* Variantes d'état (remplacent d'anciens styles en ligne) */
+    .badge-pill-on { background: var(--acc-pos-bg); color: var(--acc-pos-text); border-color: var(--acc-pos-text); }
+    .badge-pill-off { background: var(--acc-neg-bg); color: var(--acc-neg-text); border-color: var(--acc-neg-text); }
+    .alert-off { background: var(--acc-neg-bg); color: var(--acc-neg-text); border: 1px solid var(--acc-neg-text); }
+    .link-off { color: var(--acc-neg-text); font-weight: 700; }
+    /* Bouton clair posé sur le héros à fond foncé */
+    .btn-on-hero { border-color: #fff; color: #fff; }
+    /* Icône du bouton « hamburger » de navigation */
+    .icon-burger { font-size: 1.8rem; color: var(--acc-text); }
+    /* Conteneur d'empilement des toasts (au-dessus des modales Bootstrap) */
+    .acc-toast-stack { z-index: 1090; }
+    /* Icône d'un toast : taille commune + couleur selon le type */
+    .toast-ico { font-size: 1.3rem; }
+    .toast-ico--error { color: var(--acc-danger); }
+    .toast-ico--info { color: var(--acc-primary); }
+    .toast-ico--success { color: var(--acc-success); }
+
+    /* Avatar initiales */
+    .avatar {
+      width: 3rem; height: 3rem; flex: 0 0 3rem;
+      border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1.15rem;
+      background: linear-gradient(135deg, var(--acc-primary), var(--acc-green));
+      color: #fff;
+      box-shadow: inset 0 1px 1px rgba(255,255,255,.25), 0 4px 12px -5px var(--acc-primary);
+    }
+    /* Avatar compact pour les tableaux d'administration */
+    .avatar-sm { width: 2.2rem; height: 2.2rem; font-size: .9rem; vertical-align: middle; }
+
+    /* Étoiles de note */
+    .stars { color: var(--acc-accent); font-size: 1.2rem; letter-spacing: .12rem; filter: drop-shadow(0 1px 1px rgba(138,90,0,.25)); }
+    [data-bs-theme="dark"] .stars { color: var(--acc-accent-bright); filter: none; }
+
+    /* Points positifs / négatifs */
+    .pros-box { background: var(--acc-pos-bg); color: var(--acc-pos-text); border-radius: .85rem; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, var(--acc-pos-text) 25%, transparent); }
+    .cons-box { background: var(--acc-neg-bg); color: var(--acc-neg-text); border-radius: .85rem; padding: 1rem 1.1rem; border: 1px solid color-mix(in srgb, var(--acc-neg-text) 25%, transparent); }
+    .pros-box h3, .cons-box h3 { font-size: 1.15rem; }
+    .pros-box h3 { color: var(--acc-pos-text); }
+    .cons-box h3 { color: var(--acc-neg-text); }
+
+    /* ===================================================================
+       FORMULAIRES
+       =================================================================== */
+    .form-label { font-weight: 700; color: var(--acc-text); margin-bottom: .4rem; }
+    .form-control, .form-select {
+      background: var(--acc-surface-2);
+      color: var(--acc-text);
+      border: 2px solid var(--acc-border);
+      border-radius: .6rem;
+      padding: .68rem .9rem;
+      min-height: 2.85rem;
+      transition: border-color var(--transition), box-shadow var(--transition), background var(--transition);
+    }
+    .form-control::placeholder { color: var(--acc-text-soft); opacity: 1; }
+    .form-control:focus, .form-select:focus {
+      background: var(--acc-surface);
+      color: var(--acc-text);
+      border-color: var(--acc-focus);
+      box-shadow: 0 0 0 .25rem color-mix(in srgb, var(--acc-focus) 30%, transparent);
+    }
+    .form-text { color: var(--acc-text-soft); }
+    .form-control.is-invalid, .form-select.is-invalid { border-color: var(--acc-danger); }
+    .invalid-feedback { color: var(--acc-danger); font-weight: 700; }
+
+    /* Zone de glisser-déposer */
+    .dropzone {
+      border: .18rem dashed var(--acc-border);
+      border-radius: var(--acc-radius);
+      background: var(--acc-surface-2);
+      padding: clamp(1.25rem, 4vw, 2.25rem);
+      text-align: center;
+      color: var(--acc-text-soft);
+      transition: border-color var(--transition), background var(--transition), transform var(--transition);
+      cursor: pointer;
+    }
+    .dropzone:hover, .dropzone:focus-within { border-color: var(--acc-primary); background: var(--acc-bg-soft); transform: translateY(-2px); }
+    .dropzone.is-dragover { border-color: var(--acc-green-bright); background: color-mix(in srgb, var(--acc-green-bright) 14%, var(--acc-surface)); color: var(--acc-text); }
+    .dropzone .bi { font-size: 2.4rem; color: var(--acc-primary); }
+
+    .thumb-grid { display: flex; flex-wrap: wrap; gap: .75rem; }
+    .thumb {
+      position: relative; width: 6rem; height: 6rem; border-radius: .75rem; overflow: hidden;
+      border: 2px solid var(--acc-border); background: var(--acc-bg-soft);
+      box-shadow: var(--acc-shadow);
+      transition: transform var(--transition);
+    }
+    .thumb:hover { transform: scale(1.04); }
+    .thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .thumb .thumb-remove {
+      position: absolute; top: .25rem; right: .25rem;
+      width: 1.9rem; height: 1.9rem; border-radius: 50%;
+      border: none; background: rgba(16,37,66,.85); color: #fff;
+      display: inline-flex; align-items: center; justify-content: center; font-size: 1rem;
+      transition: background var(--transition), transform var(--transition);
+    }
+    .thumb .thumb-remove:hover, .thumb .thumb-remove:focus { background: var(--acc-danger); transform: scale(1.1); }
+
+    /* ===================================================================
+       CARROUSEL ACCESSIBLE (points à la base)
+       =================================================================== */
+    /* ===================================================================
+   CARROUSEL ACCESSIBLE (points à la base) — HAUTEUR AUGMENTÉE
+   =================================================================== */
+.acc-carousel { border-radius: var(--acc-radius); overflow: hidden; background: #000; box-shadow: var(--acc-shadow); }
+.acc-carousel .carousel-item img {
+  width: 100%; 
+  height: clamp(20rem, 60vw, 36rem); /* <--- MODIFIÉ ICI (Hauteur augmentée) */
+  object-fit: contain; display: block;
+}
+.acc-carousel .carousel-control-prev,
+.acc-carousel .carousel-control-next { width: 14%; }
+.acc-carousel .carousel-control-prev-icon,
+.acc-carousel .carousel-control-next-icon {
+  background-color: rgba(13,63,112,.82); border-radius: 50%;
+  width: 3rem; height: 3rem; background-size: 1.4rem;
+  border: 2px solid #fff;
+}
+.acc-carousel .carousel-indicators { margin-bottom: .9rem; }
+.acc-carousel .carousel-indicators [data-bs-target] {
+  width: 1rem; height: 1rem; border-radius: 50%;
+  background: rgba(255,255,255,.55);
+  border: 2px solid #0d2942;
+  opacity: 1; margin: 0 .35rem;
+  transition: transform var(--transition), background var(--transition);
+}
+.acc-carousel .carousel-indicators .active {
+  background: var(--acc-accent-bright);
+  border-color: #0d2942;
+  transform: scale(1.18);
+}
+.single-image img { 
+  width: 100%; 
+  height: clamp(20rem, 60vw, 36rem); /* <--- MODIFIÉ ICI (Même hauteur pour l'image unique) */
+  object-fit: contain; background-color: var(--acc-surface-2); border-radius: var(--acc-radius); display: block; box-shadow: var(--acc-shadow); 
+}
+
+    /* ===================================================================
+       COMMENTAIRES / ÉCHANGES
+       =================================================================== */
+    .comment {
+      background: var(--acc-surface-2);
+      border: 1px solid var(--acc-border);
+      border-radius: .85rem;
+      padding: 1rem 1.1rem;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .comment:hover { border-color: color-mix(in srgb, var(--acc-primary) 30%, var(--acc-border)); }
+    .comment .avatar { width: 2.4rem; height: 2.4rem; flex: 0 0 2.4rem; font-size: .95rem; }
+
+    /* ===================================================================
+       BOUTON ASCENSEUR « retour en haut »
+       =================================================================== */
+    .lift-btn {
+      position: fixed; right: 1.1rem; bottom: 1.1rem; z-index: 1040;
+      width: 3.4rem; height: 3.4rem; border-radius: 50%;
+      background: var(--acc-primary); color: var(--acc-on-primary);
+      border: 2px solid var(--acc-accent-bright);
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; box-shadow: var(--acc-shadow-lg);
+      opacity: 0; visibility: hidden; transform: translateY(1rem);
+      transition: opacity .25s ease, transform .25s ease, visibility .25s, background var(--transition);
+    }
+    .lift-btn.show { opacity: 1; visibility: visible; transform: translateY(0); }
+    .lift-btn:hover, .lift-btn:focus { background: var(--acc-primary-strong); color: var(--acc-on-primary); transform: translateY(-3px); }
+
+    /* ===================================================================
+       DIVERS
+       =================================================================== */
+    .acc-footer {
+      background: color-mix(in srgb, var(--acc-surface) 92%, transparent);
+      border-top: 1px solid var(--acc-border);
+      color: var(--acc-text-soft);
+      position: relative;
+    }
+    .acc-footer::before {
+      content: ""; position: absolute; left: 0; right: 0; top: -1px; height: 2px;
+      background: linear-gradient(90deg, var(--acc-primary), var(--acc-green-bright) 55%, var(--acc-accent-bright));
+      opacity: .7;
+    }
+    .acc-footer a { color: var(--acc-link); }
+    .text-soft { color: var(--acc-text-soft); }
+    .divider { height: 1px; background: var(--acc-border); border: 0; opacity: 1; }
+    .empty-state { text-align: center; padding: clamp(2rem, 6vw, 4rem) 1rem; color: var(--acc-text-soft); }
+    .empty-state .bi { font-size: 3rem; color: var(--acc-primary); }
+    .nav-pills .nav-link { color: var(--acc-text); background: var(--acc-bg-soft); border: 1px solid var(--acc-border); font-weight: 700; transition: transform var(--transition), background var(--transition), color var(--transition); }
+    .nav-pills .nav-link:hover { transform: translateY(-2px); }
+    .nav-pills .nav-link.active { background: var(--acc-primary); color: var(--acc-on-primary); border-color: var(--acc-primary); box-shadow: 0 8px 18px -10px var(--acc-primary); }
+    .stat-card { text-align: center; }
+    .stat-card .stat-num {
+      font-family: var(--acc-font-display); font-size: 2.5rem; font-weight: 700; line-height: 1;
+      background: linear-gradient(135deg, var(--acc-primary), var(--acc-green));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent; color: var(--acc-primary);
+    }
+    [data-bs-theme="dark"] .stat-card .stat-num {
+      background: linear-gradient(135deg, var(--acc-primary-strong), var(--acc-green-bright));
+      -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+    }
+    .table { color: var(--acc-text); }
+    .table > :not(caption) > * > * { background: transparent; color: var(--acc-text); }
+    .offcanvas, .modal-content { background: var(--acc-surface); color: var(--acc-text); border-radius: var(--acc-radius); box-shadow: var(--acc-shadow-lg); }
+    .toast { background: var(--acc-surface); color: var(--acc-text); border: 1px solid var(--acc-border); border-radius: .85rem; box-shadow: var(--acc-shadow-lg); }
+    .alert { border-radius: var(--acc-radius-sm); }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; animation: none !important; scroll-behavior: auto !important; }
+    }
+
+    /* ============================================
+       DATE & HEURE EN TEMPS RÉEL
+    ============================================ */
+    .datetime-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.95rem;
+      background: color-mix(in srgb, var(--bg-card) 85%, transparent);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      border-radius: 100px;
+      color: var(--text-secondary);
+      font-size: 1rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: default;
+      user-select: none;
+      box-shadow: var(--acc-shadow);
+      transition: border-color var(--transition), transform var(--transition), box-shadow var(--transition);
+      margin-bottom: 1.5rem; /* <--- AJOUTÉ ICI : Applique la marge en bas sur tous les écrans */
+    }
+    .datetime-pill:hover {
+      border-color: color-mix(in srgb, var(--acc-accent-bright) 55%, transparent);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px -12px var(--acc-primary);
+    }
+    .dt-icon { color: var(--gold); }
+    .datetime-clock {
+      font-family: var(--acc-font-mono);
+      font-weight: 700;
+      color: var(--text-primary);
+      letter-spacing: 0.03em;
+      font-size: 1.2rem;
+    }
+    .datetime-date {
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+    }
+    @media (max-width: 767px) {
+      .datetime-date { display: none; }
+    }
+
+    /* ============================================
+       MÉTÉO TEMPS RÉEL — Barre de navigation
+    ============================================ */
+    .weather-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.5rem 0.95rem;
+      background: color-mix(in srgb, var(--bg-card) 85%, transparent);
+      -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px);
+      border: 1px solid var(--border-glass);
+      border-radius: 100px;
+      color: var(--text-secondary);
+      font-size: 1.2rem;
+      font-weight: 600;
+      white-space: nowrap;
+      cursor: default;
+      user-select: none;
+      transition: all var(--transition);
+      position: relative;
+      overflow: hidden;
+      min-width: 92px;
+      box-shadow: var(--acc-shadow);
+      margin-bottom: 1.5rem; /* marge en bas, y compris sur petit écran */
+    }
+    .weather-pill::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, color-mix(in srgb, var(--ps-cyan) 18%, transparent) 0%, transparent 100%);
+      opacity: 0;
+      transition: opacity var(--transition);
+      border-radius: inherit;
+    }
+    .weather-pill:hover::before { opacity: 1; }
+    .weather-pill:hover {
+      border-color: color-mix(in srgb, var(--ps-cyan) 55%, transparent);
+      color: var(--ps-cyan);
+      transform: translateY(-1px);
+      box-shadow: 0 10px 22px -12px var(--ps-cyan);
+    }
+    .weather-icon {
+      font-size: 1.2rem;
+      line-height: 1;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+    .weather-pill:hover .weather-icon { transform: scale(1.25) rotate(-6deg); }
+    .weather-temp {
+      font-family: var(--acc-font-mono);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--ps-cyan);
+      min-width: 34px;
+      text-align: right;
+    }
+    .weather-city {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 100px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .weather-live-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--ps-green);
+      box-shadow: 0 0 6px var(--ps-green);
+      flex-shrink: 0;
+      animation: liveBlink 2.4s ease-in-out infinite;
+      will-change: opacity;
+    }
+    @keyframes liveBlink {
+      0%, 100% { opacity: 1;   }
+      50%       { opacity: 0.2; }
+    }
+    .weather-loading .weather-temp,
+    .weather-loading .weather-city {
+      animation: weatherPulse 1.3s ease-in-out infinite;
+      will-change: opacity;
+    }
+    .weather-loading .weather-live-dot { display: none; }
+    @keyframes weatherPulse {
+      0%, 100% { opacity: 0.35; }
+      50%       { opacity: 1;    }
+    }
+    .weather-error {
+      opacity: 0.5;
+      cursor: help;
+    }
+    .weather-error:hover { transform: none; box-shadow: none; }
+    .weather-error .weather-live-dot { display: none; }
+    @media (max-width: 1199px) {
+      .weather-city { display: none; }
+      .weather-pill { min-width: unset; }
+    }
+    @media (max-width: 991px) {
+      .weather-city  { display: inline; }
+      .weather-pill  { margin-top: 0.25rem; margin-bottom: 0.25rem; }
+    }
+    @media (max-width: 360px) {
+      .weather-city { display: none; }
+    }
+    [data-bs-theme="light"] .weather-temp { color: var(--ps-blue-deep); }
+    [data-bs-theme="light"] .weather-pill:hover {
+      border-color: color-mix(in srgb, var(--ps-cyan) 45%, transparent);
+      box-shadow: 0 10px 20px -12px var(--ps-cyan);
+    }
+
+    /* Barre d'info supérieure (date à gauche, météo à droite) */
+    .top-info-bar {
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      gap: 0.75rem;
+      flex-wrap: wrap;
+    }
+    .main-layout .top-info-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 100%;
+    }
+    .datetime-pill,
+    .weather-pill { flex-shrink: 0; }
+
+    /* ===============================
+       BARRE DE DÉFILEMENT (CHROME)
+       =============================== */
+    html::-webkit-scrollbar,
+    body::-webkit-scrollbar {
+      width: 14px;
+      height: 14px;
+    }
+    html::-webkit-scrollbar-track,
+    body::-webkit-scrollbar-track {
+      background: var(--scrollbar-track);
+      border-radius: 12px;
+    }
+    html::-webkit-scrollbar-thumb,
+    body::-webkit-scrollbar-thumb {
+      background: var(--scrollbar-thumb);
+      border-radius: 12px;
+      border: 3px solid var(--scrollbar-track);
+    }
+    html::-webkit-scrollbar-thumb:hover,
+    body::-webkit-scrollbar-thumb:hover {
+      background: var(--scrollbar-thumb-hover);
+    }
+    html::-webkit-scrollbar-corner,
+    body::-webkit-scrollbar-corner {
+      background: transparent;
+    }
+    html, body {
+      scrollbar-width: auto;
+      scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+    }
+    * { scrollbar-width: auto; }
+  
+
+    /* ===================================================================
+       LOGO DANS LE HÉROS — totalement responsive
+       =================================================================== */
+    .acc-hero-grid {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: clamp(1.25rem, 4vw, 2.5rem);
+    }
+    .acc-hero-content { width: 100%; min-width: 0; }
+    .acc-hero-media {
+      margin: 0 auto;
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: center;
+    }
+    .acc-hero-media img {
+      display: block;
+      width: clamp(8.5rem, 22vw, 15rem);
+      height: auto;
+      aspect-ratio: 1 / 1;
+      object-fit: cover;
+      border-radius: 50%;
+      background: #fff;
+      padding: clamp(.35rem, 1vw, .55rem);
+      box-shadow:
+        0 22px 60px -18px rgba(0,0,0,.6),
+        0 0 0 1px rgba(255,255,255,.28),
+        0 0 0 6px rgba(255,255,255,.08);
+      animation: acc-hero-float 6.5s ease-in-out infinite;
+      will-change: transform;
+    }
+    @keyframes acc-hero-float {
+      0%, 100% { transform: translateY(0); }
+      50%      { transform: translateY(-10px); }
+    }
+    /* À partir de la tablette : texte à gauche, logo à droite, alignés */
+    @media (min-width: 768px) {
+      .acc-hero-grid { flex-direction: row; align-items: center; }
+      .acc-hero-content { flex: 1 1 0; }
+      .acc-hero-media { margin: 0; }
+    }
+  </style>
+</head>
+
+<body>
+  <a class="skip-link" href="#main">Aller au contenu principal</a>
+
+  <!-- Région d'annonces pour lecteurs d'écran -->
+  <div id="live-region" class="visually-hidden" role="status" aria-live="polite" aria-atomic="true"></div>
+
+  <!-- ============================= EN-TÊTE ============================= -->
+  <header role="banner">
+    <nav class="navbar navbar-expand-lg acc-navbar sticky-top" role="navigation" aria-label="Navigation principale">
+      <div class="container">
+        <a class="acc-brand" href="#/accueil">
+            <img
+                class="acc-brand-logo"
+                src="assets/img/favicon2-removebg-preview.png"
+                alt="Logo AccessCulture — avis d'accessibilité des lieux de culture, ville par ville"
+                width="48"
+                height="48"
+                loading="eager"
+                fetchpriority="high"
+                decoding="async">
+            <span>AccessCulture</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainMenu" aria-controls="mainMenu" aria-expanded="false" aria-label="Ouvrir le menu de navigation">
+          <i class="bi bi-list icon-burger" aria-hidden="true"></i>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainMenu">
+          <ul class="navbar-nav ms-lg-auto align-items-lg-center gap-2" id="primary-nav">
+            <li class="nav-item"><a class="nav-link" href="#/accueil" data-route="accueil"><i class="bi bi-house-door me-1" aria-hidden="true"></i>Accueil</a></li>
+            <li class="nav-item"><a class="nav-link" href="#/nouveau" data-route="nouveau"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Déposer un avis</a></li>
+            <li class="nav-item" data-auth="user"><a class="nav-link" href="#/espace" data-route="espace"><i class="bi bi-person-circle me-1" aria-hidden="true"></i>Mon espace</a></li>
+            <li class="nav-item" data-auth="admin"><a class="nav-link" href="#/admin" data-route="admin"><i class="bi bi-shield-lock me-1" aria-hidden="true"></i>Administration</a></li>
+           
+            <li class="nav-item" data-auth="guest"><a class="nav-link" href="#/connexion" data-route="connexion"><i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>Connexion</a></li>
+            <li class="nav-item" data-auth="loggedin">
+              <button type="button" class="btn btn-acc-ghost w-100" id="btn-logout">
+                <i class="bi bi-box-arrow-right me-1" aria-hidden="true"></i>Déconnexion (<span id="nav-username">…</span>)
+              </button>
+            </li>
+            <li class="nav-item ms-lg-2 mt-2 mt-lg-0">
+              <button type="button" class="icon-btn" id="theme-toggle" aria-pressed="false" aria-label="Activer le mode sombre">
+                <i class="bi bi-moon-stars-fill" aria-hidden="true"></i>
+              </button>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <!-- ============================= CONTENU ============================= -->
+  <main id="main" role="main" class="container py-4 py-lg-5 main-layout" tabindex="-1">
+
+    <div class="top-info-bar">
+     <!-- ═══ DATE & HEURE EN TEMPS RÉEL ═══ -->
+        <div class="datetime-pill ms-lg-2 me-lg-1"
+             id="datetimePill"
+             role="timer"
+             aria-live="off"
+             aria-label="Date et heure actuelles"
+             title="Date et heure locales">
+          <span class="dt-icon" aria-hidden="true">🗓️</span>
+          <span id="datetimeDate" class="datetime-date">…</span>
+          <span aria-hidden="true">·</span>
+          <span id="datetimeClock" class="datetime-clock">--:--:--</span>
+        </div>
+       <!-- ═══ DATE & HEURE EN TEMPS RÉEL ═══ -->
+
+        <!-- ═══ MÉTÉO TEMPS RÉEL ═══ -->
+          <div class="weather-pill ms-lg-2 me-lg-1"
+               id="weatherPill"
+               role="status"
+               aria-live="polite"
+               aria-atomic="true"
+               aria-label="Chargement de la météo…"
+               title="Localisation en cours…">
+            <span class="weather-icon" id="weatherIcon" aria-hidden="true">🌡️</span>
+            <span class="weather-temp"     id="weatherTemp">--°</span>
+            <span class="weather-city"     id="weatherCity">Localisation…</span>
+            <span class="weather-live-dot" id="weatherLiveDot" aria-hidden="true"></span>
+          </div>
+          <!-- ═══ MÉTÉO TEMPS RÉEL ═══ -->
+    </div>
+    <!-- Titre principal unique de la page (mis à jour à chaque vue par le routeur).
+         Visuellement masqué : chaque vue affiche son propre titre stylé .view-title. -->
+    <h1 id="view-heading" tabindex="-1" class="visually-hidden">AccessCulture</h1>
+    <div id="view"><!-- Le contenu des vues est injecté ici --></div>
+  </main>
+
+  <!-- ============================= PIED DE PAGE ============================= -->
+  <footer role="contentinfo" class="acc-footer py-4 mt-auto">
+    <div class="container">
+      <div class="row gy-3 align-items-center">
+        <div class="col-12 col-md-6">
+          <p class="mb-1"><strong>AccessCulture</strong> — l'accessibilité racontée par celles et ceux qui la vivent.</p>
+          <p class="mb-0 text-soft">Vos données restent dans votre navigateur (LocalStorage &amp; IndexedDB).</p>
+        </div>
+        <div class="col-12 col-md-6 text-md-end">
+          <nav role="navigation" aria-label="Liens de pied de page">
+            <a href="#/accueil" class="me-3">Accueil</a>
+            <a href="#/nouveau" class="me-3">Déposer un avis</a>
+            <a href="#/connexion">Connexion</a>
+          </nav>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bouton ascenseur « retour en haut » -->
+  <button type="button" class="lift-btn" id="lift-btn" aria-label="Remonter en haut de la page" data-bs-toggle="tooltip" data-bs-placement="left" title="Remonter en haut">
+    <i class="bi bi-arrow-up" aria-hidden="true"></i>
+  </button>
+
+  <!-- Conteneur des notifications (toasts) -->
+  <div class="toast-container position-fixed bottom-0 start-0 p-3 acc-toast-stack" id="toast-container"></div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <script>
+  /* =====================================================================
+     AccessCulture — Application mono-page (SPA) sans dépendance serveur
+     IndexedDB pour les données lourdes (avis, images, commentaires),
+     LocalStorage pour la session et le thème.
+     ===================================================================== */
+  'use strict';
+  (function () {
+
+    /* ----------------------------- Constantes ----------------------------- */
+    const DB_NAME = 'AccesCultureDB';
+    const DB_VERSION = 1;
+    const LS_SESSION = 'cult.session';
+    const LS_THEME = 'cult.theme';
+    const MAX_IMAGES = 8;
+    const MAX_DIM = 1280;          // redimensionnement max des images
+    const JPEG_QUALITY = 0.82;
+
+    const LIEUX = [
+      { id: 'theatre', label: 'Théâtre', icon: 'bi-mask' },
+      { id: 'musee', label: 'Musée', icon: 'bi-bank' },
+      { id: 'expo', label: 'Exposition', icon: 'bi-image' },
+      { id: 'concert', label: 'Salle de concert / Opéra', icon: 'bi-music-note-beamed' },
+      { id: 'mediatheque', label: 'Médiathèque / Bibliothèque', icon: 'bi-book' },
+      { id: 'patrimoine', label: 'Monument / Patrimoine', icon: 'bi-building' },
+      { id: 'galerie', label: 'Galerie d\u2019art', icon: 'bi-easel' },
+      { id: 'autre', label: 'Autre lieu culturel', icon: 'bi-signpost-2' }
+    ];
+
+    /* ----------------------------- Utilitaires ----------------------------- */
+    function $(sel, ctx) { return (ctx || document).querySelector(sel); }
+    function $all(sel, ctx) { return Array.prototype.slice.call((ctx || document).querySelectorAll(sel)); }
+
+    function uid() {
+      try { if (window.crypto && typeof crypto.randomUUID === 'function') { return crypto.randomUUID(); } }
+      catch (e) { /* on bascule sur le repli */ }
+      return 'id-' + Date.now().toString(36) + '-' + Math.floor(Math.random() * 1e9).toString(36);
+    }
+
+    function hashStr(str) {
+      let h = 5381, i;
+      for (i = 0; i < str.length; i++) { h = ((h << 5) + h) + str.charCodeAt(i); h = h & h; }
+      return (h >>> 0).toString(16);
+    }
+
+    function escapeHtml(value) {
+      let s = (value === null || value === undefined) ? '' : String(value);
+      return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+              .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+    }
+
+    function nl2br(value) { return escapeHtml(value).replace(/\n/g, '<br>'); }
+
+    function fmtDate(ts) {
+      try {
+        return new Date(ts).toLocaleDateString('fr-FR', { day: '2-digit', month: 'long', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+      } catch (e) { return ''; }
+    }
+
+    function initials(name) {
+      let parts = String(name || '?').trim().split(/\s+/);
+      let a = parts[0] ? parts[0].charAt(0) : '?';
+      let b = parts.length > 1 ? parts[parts.length - 1].charAt(0) : '';
+      return (a + b).toUpperCase();
+    }
+
+    function lieuById(id) {
+      for (let i = 0; i < LIEUX.length; i++) { if (LIEUX[i].id === id) { return LIEUX[i]; } }
+      return { id: id, label: 'Lieu culturel', icon: 'bi-signpost-2' };
+    }
+
+    function announce(msg) { let r = $('#live-region'); if (r) { r.textContent = ''; window.setTimeout(function () { r.textContent = msg; }, 30); } }
+
+    function toast(message, type) {
+      let container = $('#toast-container');
+      if (!container) { return; }
+      let icon = type === 'error' ? 'bi-exclamation-triangle-fill' : (type === 'info' ? 'bi-info-circle-fill' : 'bi-check-circle-fill');
+      let toneClass = type === 'error' ? 'toast-ico--error' : (type === 'info' ? 'toast-ico--info' : 'toast-ico--success');
+      let el = document.createElement('div');
+      el.className = 'toast align-items-center';
+      el.setAttribute('role', type === 'error' ? 'alert' : 'status');
+      el.setAttribute('aria-live', type === 'error' ? 'assertive' : 'polite');
+      el.setAttribute('aria-atomic', 'true');
+      el.innerHTML =
+        '<div class="d-flex">' +
+          '<div class="toast-body d-flex align-items-center gap-2">' +
+            '<i class="bi ' + icon + ' toast-ico ' + toneClass + '" aria-hidden="true"></i>' +
+            '<span>' + escapeHtml(message) + '</span>' +
+          '</div>' +
+          '<button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer la notification"></button>' +
+        '</div>';
+      container.appendChild(el);
+      let t = bootstrap.Toast.getOrCreateInstance(el, { delay: 4000 });
+      el.addEventListener('hidden.bs.toast', function () { el.remove(); });
+      t.show();
+    }
+
+    /* ----------------------------- IndexedDB ----------------------------- */
+    let _dbPromise = null;
+    function openDB() {
+      if (_dbPromise) { return _dbPromise; }
+      _dbPromise = new Promise(function (resolve, reject) {
+        let req = indexedDB.open(DB_NAME, DB_VERSION);
+        req.onupgradeneeded = function (e) {
+          let db = e.target.result;
+          if (!db.objectStoreNames.contains('users')) {
+            let u = db.createObjectStore('users', { keyPath: 'id' });
+            u.createIndex('username', 'username', { unique: true });
+          }
+          if (!db.objectStoreNames.contains('reviews')) {
+            let r = db.createObjectStore('reviews', { keyPath: 'id' });
+            r.createIndex('createdAt', 'createdAt', { unique: false });
+            r.createIndex('userId', 'userId', { unique: false });
+          }
+          if (!db.objectStoreNames.contains('comments')) {
+            let c = db.createObjectStore('comments', { keyPath: 'id' });
+            c.createIndex('reviewId', 'reviewId', { unique: false });
+          }
+        };
+        req.onsuccess = function (e) { resolve(e.target.result); };
+        req.onerror = function () { reject(req.error); };
+      });
+      return _dbPromise;
+    }
+
+    function tx(store, mode) {
+      return openDB().then(function (db) {
+        return db.transaction(store, mode).objectStore(store);
+      });
+    }
+    function reqToPromise(request) {
+      return new Promise(function (resolve, reject) {
+        request.onsuccess = function () { resolve(request.result); };
+        request.onerror = function () { reject(request.error); };
+      });
+    }
+    function dbGetAll(store) { return tx(store, 'readonly').then(function (s) { return reqToPromise(s.getAll()); }); }
+    function dbGet(store, key) { return tx(store, 'readonly').then(function (s) { return reqToPromise(s.get(key)); }); }
+    function dbPut(store, value) { return tx(store, 'readwrite').then(function (s) { return reqToPromise(s.put(value)); }); }
+    function dbDelete(store, key) { return tx(store, 'readwrite').then(function (s) { return reqToPromise(s.delete(key)); }); }
+    function dbClear(store) { return tx(store, 'readwrite').then(function (s) { return reqToPromise(s.clear()); }); }
+
+    function getUserByUsername(username) {
+      return tx('users', 'readonly').then(function (s) {
+        return reqToPromise(s.index('username').get(String(username).toLowerCase()));
+      });
+    }
+    function getCommentsForReview(reviewId) {
+      return tx('comments', 'readonly').then(function (s) {
+        return reqToPromise(s.index('reviewId').getAll(reviewId));
+      });
+    }
+
+    /* ----------------------------- Session ----------------------------- */
+    let currentUser = null;
+
+    function loadSession() {
+      let id = null;
+      try { id = window.localStorage.getItem(LS_SESSION); } catch (e) { id = null; }
+      if (!id) { currentUser = null; return Promise.resolve(null); }
+      return dbGet('users', id).then(function (u) {
+        currentUser = (u && u.active !== false) ? u : null;
+        if (u && u.active === false) { try { window.localStorage.removeItem(LS_SESSION); } catch (e) {} }
+        return currentUser;
+      });
+    }
+    function setSession(user) {
+      currentUser = user;
+      try {
+        if (user) { window.localStorage.setItem(LS_SESSION, user.id); }
+        else { window.localStorage.removeItem(LS_SESSION); }
+      } catch (e) { /* stockage indisponible : on continue en mémoire */ }
+    }
+
+    /* ----------------------------- Thème ----------------------------- */
+    function applyTheme(theme) {
+      let t = theme === 'dark' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-bs-theme', t);
+      let btn = $('#theme-toggle');
+      if (btn) {
+        let isDark = t === 'dark';
+        btn.setAttribute('aria-pressed', isDark ? 'true' : 'false');
+        btn.setAttribute('aria-label', isDark ? 'Activer le mode clair' : 'Activer le mode sombre');
+        let ic = btn.querySelector('i');
+        if (ic) { ic.className = isDark ? 'bi bi-sun-fill' : 'bi bi-moon-stars-fill'; }
+      }
+      try { window.localStorage.setItem(LS_THEME, t); } catch (e) { /* ignore */ }
+    }
+    function initTheme() {
+      let saved = null;
+      try { saved = window.localStorage.getItem(LS_THEME); } catch (e) { saved = null; }
+      if (!saved) {
+        saved = (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+      }
+      applyTheme(saved);
+    }
+
+    /* ----------------------------- Images ----------------------------- */
+    function fileToResizedDataUrl(file) {
+      return new Promise(function (resolve, reject) {
+        if (!file || file.type.indexOf('image/') !== 0) { reject(new Error('Le fichier n\u2019est pas une image.')); return; }
+        let reader = new FileReader();
+        reader.onerror = function () { reject(new Error('Lecture du fichier impossible.')); };
+        reader.onload = function () {
+          let img = new Image();
+          img.onerror = function () { reject(new Error('Image illisible.')); };
+          img.onload = function () {
+            let w = img.naturalWidth, h = img.naturalHeight;
+            let scale = Math.min(1, MAX_DIM / Math.max(w, h));
+            let cw = Math.max(1, Math.round(w * scale));
+            let ch = Math.max(1, Math.round(h * scale));
+            let canvas = document.createElement('canvas');
+            canvas.width = cw; canvas.height = ch;
+            let ctx2d = canvas.getContext('2d');
+            ctx2d.drawImage(img, 0, 0, cw, ch);
+            let out;
+            try { out = canvas.toDataURL('image/jpeg', JPEG_QUALITY); }
+            catch (e) { out = reader.result; }
+            resolve({ src: out, alt: file.name ? file.name.replace(/\.[^.]+$/, '') : 'Photo de l\u2019avis' });
+          };
+          img.src = reader.result;
+        };
+        reader.readAsDataURL(file);
+      });
+    }
+
+    /* =====================================================================
+       ROUTAGE
+       ===================================================================== */
+    const ROUTES = {
+      accueil: renderHome,
+      connexion: renderAuth,
+      inscription: renderAuth,
+      nouveau: renderNew,
+      avis: renderDetail,
+      espace: renderSpace,
+      admin: renderAdmin,
+      'modifier-avis': renderEditReview,
+      'modifier-membre': renderEditUser
+    };
+
+    const ADMIN_ROUTES = { admin: true, 'modifier-avis': true, 'modifier-membre': true };
+
+    function parseHash() {
+      let raw = (window.location.hash || '#/accueil').replace(/^#\/?/, '');
+      let parts = raw.split('/').filter(Boolean);
+      return { name: parts[0] || 'accueil', param: parts[1] || null };
+    }
+
+    function navigate(hash) { window.location.hash = hash; }
+
+    function updateNav(routeName) {
+      $all('#primary-nav .nav-link[data-route]').forEach(function (link) {
+        let active = link.getAttribute('data-route') === routeName;
+        if (active) { link.classList.add('active'); link.setAttribute('aria-current', 'page'); }
+        else { link.classList.remove('active'); link.removeAttribute('aria-current'); }
+      });
+      let isLogged = !!currentUser;
+      let isAdmin = isLogged && currentUser.role === 'admin';
+      $all('[data-auth]').forEach(function (el) {
+        let need = el.getAttribute('data-auth');
+        let show =
+          (need === 'guest' && !isLogged) ||
+          (need === 'loggedin' && isLogged) ||
+          (need === 'user' && isLogged) ||
+          (need === 'admin' && isAdmin);
+        el.classList.toggle('d-none', !show);
+      });
+      let nu = $('#nav-username');
+      if (nu) { nu.textContent = currentUser ? currentUser.displayName : ''; }
+    }
+
+    function closeMenu() {
+      let menuEl = $('#mainMenu');
+      if (menuEl && menuEl.classList.contains('show')) {
+        let col = bootstrap.Collapse.getOrCreateInstance(menuEl, { toggle: false });
+        col.hide();
+      }
+    }
+
+    function router() {
+      let route = parseHash();
+      let fn = ROUTES[route.name] || renderNotFound;
+      closeMenu();
+
+      // Garde d'accès
+      if ((route.name === 'nouveau' || route.name === 'espace') && !currentUser) {
+        toast('Veuillez vous connecter pour accéder à cet espace.', 'info');
+        return navigate('#/connexion');
+      }
+      if (ADMIN_ROUTES[route.name] && (!currentUser || currentUser.role !== 'admin')) {
+        toast('Accès réservé à l\u2019administration.', 'error');
+        return navigate('#/accueil');
+      }
+
+      Promise.resolve(fn(route))
+        .then(function () {
+          updateNav(route.name);
+          window.scrollTo({ top: 0, behavior: 'auto' });
+          let heading = $('#view-heading');
+          let title = $('#view .view-title');
+          if (heading) {
+            heading.textContent = title ? (title.textContent || '').trim() : 'AccessCulture';
+            heading.focus();
+          }
+        })
+        .catch(function (err) {
+          console && console.warn && console.warn(err);
+          $('#view').innerHTML = errorBlock('Une erreur est survenue lors du chargement de la page.');
+          let heading = $('#view-heading');
+          let title = $('#view .view-title');
+          if (heading) {
+            heading.textContent = title ? (title.textContent || '').trim() : 'Erreur';
+            heading.focus();
+          }
+        });
+    }
+
+    function errorBlock(msg) {
+      return '<section aria-labelledby="view-heading"><h2 class="h1 view-title">Oups</h2>' +
+        '<div class="acc-card"><div class="card-body"><p class="mb-0">' + escapeHtml(msg) + '</p></div></div></section>';
+    }
+
+    function renderNotFound() {
+      $('#view').innerHTML =
+        '<section aria-labelledby="view-heading">' +
+        '<h2 class="h1 view-title">Page introuvable</h2>' +
+        '<div class="acc-card"><div class="card-body">' +
+        '<p>La page demandée n\u2019existe pas.</p>' +
+        '<a class="btn btn-acc-primary" href="#/accueil"><i class="bi bi-house-door me-1" aria-hidden="true"></i>Retour à l\u2019accueil</a>' +
+        '</div></div></section>';
+      return Promise.resolve();
+    }
+
+    /* =====================================================================
+       VUE — ACCUEIL (fil des avis + recherche)
+       ===================================================================== */
+    let homeFilters = { city: '', lieu: '', rating: '' };
+
+    function renderHome() {
+      return dbGetAll('reviews').then(function (reviews) {
+        return getCommentsCounts().then(function (counts) {
+          reviews = (reviews || []).filter(function (r) { return r.active !== false; });
+          reviews.sort(function (a, b) { return b.createdAt - a.createdAt; });
+
+          let lieuOptions = LIEUX.map(function (t) {
+            return '<option value="' + t.id + '"' + (homeFilters.lieu === t.id ? ' selected' : '') + '>' + escapeHtml(t.label) + '</option>';
+          }).join('');
+
+          let filtered = reviews.filter(function (r) {
+            let okCity = !homeFilters.city || (r.city || '').toLowerCase().indexOf(homeFilters.city.toLowerCase()) !== -1;
+            let okTr = !homeFilters.lieu || r.lieu === homeFilters.lieu;
+            let okRt = !homeFilters.rating || Number(r.rating) >= Number(homeFilters.rating);
+            return okCity && okTr && okRt;
+          });
+
+          let cards = filtered.length
+            ? filtered.map(function (r) { return reviewCardHtml(r, counts[r.id] || 0); }).join('')
+            : '<div class="col-12"><div class="empty-state acc-card"><div class="card-body">' +
+              '<i class="bi bi-inboxes" aria-hidden="true"></i>' +
+              '<p class="mt-3 mb-3">Aucun avis ne correspond à votre recherche pour le moment.</p>' +
+              '<a class="btn btn-acc-primary" href="#/nouveau"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Soyez la première personne à témoigner</a>' +
+              '</div></div></div>';
+
+          $('#view').innerHTML =
+              '<section aria-labelledby="view-heading">' +
+                '<div class="acc-hero mb-4">' +
+                  '<div class="acc-hero-grid">' +
+                    '<div class="acc-hero-content">' +
+                      '<span class="badge badge-soft mb-3"><i class="bi bi-people-fill me-1" aria-hidden="true"></i>Communauté solidaire</span>' +
+                      '<h2 class="h1 view-title mb-2">L\u2019accessibilité des lieux de culture, racontée par celles et ceux qui la vivent</h2>' +
+                      '<p class="lead mb-4">Partagez votre expérience des théâtres, musées, expositions et autres lieux de culture, ville par ville. Vos retours aident toute la communauté, quel que soit le handicap.</p>' +
+                      '<div class="d-flex flex-wrap gap-2">' +
+                        '<a class="btn btn-light btn-lg fw-bold" href="#/nouveau"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Déposer un avis</a>' +
+                        (currentUser ? '' : '<a class="btn btn-acc-outline btn-lg btn-on-hero" href="#/inscription"><i class="bi bi-person-plus me-1" aria-hidden="true"></i>Créer un compte</a>') +
+                      '</div>' +
+                    '</div>' +
+                    '<figure class="acc-hero-media mb-0">' +
+                      '<img src="assets/img/favicon2-removebg-preview.png" alt="" aria-hidden="true" width="400" height="400" decoding="async">' +
+                    '</figure>' +
+                  '</div>' +
+                '</div>' +
+              +
+
+              '<section role="search" aria-label="Filtrer les avis" class="acc-card mb-4">' +
+                '<div class="card-body">' +
+                  '<h2 class="h4 mb-3"><i class="bi bi-funnel me-1" aria-hidden="true"></i>Rechercher un avis</h2>' +
+                  '<div class="row g-3 align-items-end">' +
+                    '<div class="col-12 col-md-5">' +
+                      '<label class="form-label" for="f-city">Ville</label>' +
+                      '<input class="form-control" type="search" id="f-city" placeholder="Ex. : Lyon, Marseille\u2026" value="' + escapeHtml(homeFilters.city) + '">' +
+                    '</div>' +
+                    '<div class="col-7 col-md-4">' +
+                      '<label class="form-label" for="f-lieu">Type de lieu culturel</label>' +
+                      '<select class="form-select" id="f-lieu"><option value="">Tous les lieux</option>' + lieuOptions + '</select>' +
+                    '</div>' +
+                    '<div class="col-5 col-md-3">' +
+                      '<label class="form-label" for="f-rating">Note minimale</label>' +
+                      '<select class="form-select" id="f-rating">' +
+                        '<option value="">Toutes</option>' +
+                        '<option value="4"' + (homeFilters.rating === '4' ? ' selected' : '') + '>4 ★ et +</option>' +
+                        '<option value="3"' + (homeFilters.rating === '3' ? ' selected' : '') + '>3 ★ et +</option>' +
+                        '<option value="2"' + (homeFilters.rating === '2' ? ' selected' : '') + '>2 ★ et +</option>' +
+                      '</select>' +
+                    '</div>' +
+                  '</div>' +
+                '</div>' +
+              '</section>' +
+
+              '<h2 class="h4 mb-3" id="results-heading">' + filtered.length + ' avis partagé' + (filtered.length > 1 ? 's' : '') + '</h2>' +
+              '<div class="row g-4" aria-labelledby="results-heading">' + cards + '</div>' +
+            '</section>';
+
+          // Filtres en direct
+          let fCity = $('#f-city'), fTr = $('#f-lieu'), fRt = $('#f-rating');
+          if (fCity) { fCity.addEventListener('input', function () { homeFilters.city = fCity.value; rerenderHomeResults(reviews, counts); }); }
+          if (fTr) { fTr.addEventListener('change', function () { homeFilters.lieu = fTr.value; rerenderHomeResults(reviews, counts); }); }
+          if (fRt) { fRt.addEventListener('change', function () { homeFilters.rating = fRt.value; rerenderHomeResults(reviews, counts); }); }
+        });
+      });
+    }
+
+    function rerenderHomeResults(reviews, counts) {
+      let filtered = reviews.filter(function (r) {
+        let okCity = !homeFilters.city || (r.city || '').toLowerCase().indexOf(homeFilters.city.toLowerCase()) !== -1;
+        let okTr = !homeFilters.lieu || r.lieu === homeFilters.lieu;
+        let okRt = !homeFilters.rating || Number(r.rating) >= Number(homeFilters.rating);
+        return okCity && okTr && okRt;
+      });
+      let heading = $('#results-heading');
+      if (heading) { heading.textContent = filtered.length + ' avis partagé' + (filtered.length > 1 ? 's' : ''); }
+      let container = heading ? heading.nextElementSibling : null;
+      if (container) {
+        container.innerHTML = filtered.length
+          ? filtered.map(function (r) { return reviewCardHtml(r, counts[r.id] || 0); }).join('')
+          : '<div class="col-12"><div class="empty-state acc-card"><div class="card-body"><i class="bi bi-search" aria-hidden="true"></i><p class="mt-3 mb-0">Aucun avis ne correspond à ces critères.</p></div></div></div>';
+      }
+      announce(filtered.length + ' avis trouvés.');
+    }
+
+    function getCommentsCounts() {
+      return dbGetAll('comments').then(function (all) {
+        let map = {};
+        (all || []).forEach(function (c) { map[c.reviewId] = (map[c.reviewId] || 0) + 1; });
+        return map;
+      });
+    }
+
+    function starsHtml(rating) {
+      let n = Math.max(0, Math.min(5, Number(rating) || 0));
+      let html = '';
+      for (let i = 1; i <= 5; i++) { html += '<i class="bi ' + (i <= n ? 'bi-star-fill' : 'bi-star') + '" aria-hidden="true"></i>'; }
+      return '<span class="stars" role="img" aria-label="Note : ' + n + ' sur 5">' + html + '</span>';
+    }
+
+    function mediaHtml(review, idPrefix) {
+      let imgs = review.images || [];
+      if (!imgs.length) { return ''; }
+      if (imgs.length === 1) {
+        return '<div class="single-image mb-3"><img src="' + imgs[0].src + '" alt="' + escapeHtml(imgs[0].alt || ('Photo de l\u2019avis sur ' + review.city)) + '" loading="lazy" decoding="async"></div>';
+      }
+      let carId = idPrefix + '-car-' + review.id.replace(/[^a-zA-Z0-9_-]/g, '');
+      let indicators = imgs.map(function (img, i) {
+        return '<button type="button" data-bs-target="#' + carId + '" data-bs-slide-to="' + i + '"' +
+               (i === 0 ? ' class="active" aria-current="true"' : '') +
+               ' aria-label="Aller à la photo ' + (i + 1) + ' sur ' + imgs.length + '"></button>';
+      }).join('');
+      let slides = imgs.map(function (img, i) {
+        return '<div class="carousel-item' + (i === 0 ? ' active' : '') + '">' +
+               '<img src="' + img.src + '" alt="' + escapeHtml(img.alt || ('Photo ' + (i + 1) + ' de l\u2019avis sur ' + review.city)) + '" loading="lazy" decoding="async"></div>';
+      }).join('');
+      return '<div id="' + carId + '" class="carousel slide acc-carousel mb-3" data-bs-interval="false" data-bs-touch="true" ' +
+             'role="region" aria-roledescription="carrousel" aria-label="Photos de l\u2019avis sur ' + escapeHtml(review.city) + ' (' + imgs.length + ' photos, défilement à votre rythme)">' +
+             '<div class="carousel-indicators">' + indicators + '</div>' +
+             '<div class="carousel-inner">' + slides + '</div>' +
+             '<button class="carousel-control-prev" type="button" data-bs-target="#' + carId + '" data-bs-slide="prev">' +
+               '<span class="carousel-control-prev-icon" aria-hidden="true"></span><span class="visually-hidden">Photo précédente</span></button>' +
+             '<button class="carousel-control-next" type="button" data-bs-target="#' + carId + '" data-bs-slide="next">' +
+               '<span class="carousel-control-next-icon" aria-hidden="true"></span><span class="visually-hidden">Photo suivante</span></button>' +
+             '</div>';
+    }
+
+    function reviewCardHtml(review, commentCount) {
+      let tr = lieuById(review.lieu);
+      let pros = (review.pros || '').trim();
+      let cons = (review.cons || '').trim();
+      return '' +
+        '<div class="col-12 col-lg-6">' +
+          '<article class="acc-card h-100" aria-labelledby="rev-' + review.id + '-title">' +
+            '<div class="card-body d-flex flex-column">' +
+              '<div class="d-flex align-items-center gap-3 mb-3">' +
+                '<span class="avatar" aria-hidden="true">' + escapeHtml(initials(review.authorName)) + '</span>' +
+                '<div>' +
+                  '<p class="mb-0 fw-bold">' + escapeHtml(review.authorName) + '</p>' +
+                  '<p class="mb-0 text-soft">' + escapeHtml(fmtDate(review.createdAt)) + '</p>' +
+                '</div>' +
+              '</div>' +
+              '<div class="d-flex flex-wrap gap-2 mb-3">' +
+                '<span class="badge-pill badge-city"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i>' + escapeHtml(review.city) + '</span>' +
+                '<span class="badge-pill"><i class="bi ' + tr.icon + '" aria-hidden="true"></i>' + escapeHtml(tr.label) + '</span>' +
+                starsHtml(review.rating) +
+              '</div>' +
+              '<h3 id="rev-' + review.id + '-title" class="h5 mb-2">' + escapeHtml(review.title) +
+                (review.active === false ? ' <span class="badge-pill badge-pill-off"><i class="bi bi-eye-slash-fill" aria-hidden="true"></i>Désactivé</span>' : '') +
+              '</h3>' +
+              mediaHtml(review, 'card') +
+              (review.experience ? '<p class="mb-3">' + expandable(review.experience, 240) + '</p>' : '') +
+              (pros ? '<div class="pros-box mb-2"><h3 class="h6 mb-1"><i class="bi bi-hand-thumbs-up-fill me-1" aria-hidden="true"></i>Les plus</h3><p class="mb-0">' + expandable(pros, 160) + '</p></div>' : '') +
+              (cons ? '<div class="cons-box mb-2"><h3 class="h6 mb-1"><i class="bi bi-hand-thumbs-down-fill me-1" aria-hidden="true"></i>Les moins</h3><p class="mb-0">' + expandable(cons, 160) + '</p></div>' : '') +
+              '<div class="mt-auto pt-3 d-flex justify-content-between align-items-center">' +
+                '<span class="text-soft"><i class="bi bi-chat-dots me-1" aria-hidden="true"></i>' + commentCount + ' commentaire' + (commentCount > 1 ? 's' : '') + '</span>' +
+                '<a class="btn btn-acc-outline" href="#/avis/' + encodeURIComponent(review.id) + '">Voir &amp; échanger<span class="visually-hidden"> au sujet de l\u2019avis : ' + escapeHtml(review.title) + '</span><i class="bi bi-arrow-right ms-1" aria-hidden="true"></i></a>' +
+              '</div>' +
+            '</div>' +
+          '</article>' +
+        '</div>';
+    }
+
+    function truncate(str, n) {
+      str = String(str || '');
+      return str.length > n ? str.slice(0, n).replace(/\s+\S*$/, '') + '\u2026' : str;
+    }
+
+    // Texte dépliable : version courte + texte complet + bouton « Lire plus »
+    function expandable(text, n) {
+      let full = String(text || '');
+      if (full.length <= n) { return nl2br(full); }
+      return '<span class="exp-text">' +
+               '<span class="exp-short">' + nl2br(truncate(full, n)) + '</span>' +
+               '<span class="exp-full" hidden>' + nl2br(full) + '</span> ' +
+               '<button type="button" class="exp-toggle js-lire-plus" aria-expanded="false">Lire plus</button>' +
+             '</span>';
+    }
+
+    /* =====================================================================
+       VUE — DÉTAIL D'UN AVIS (+ commentaires / échanges)
+       ===================================================================== */
+    function renderDetail(route) {
+      let id = route.param ? decodeURIComponent(route.param) : null;
+      if (!id) { return renderNotFound(); }
+      return dbGet('reviews', id).then(function (review) {
+        if (!review) { return renderNotFound(); }
+        let isAdmin = currentUser && currentUser.role === 'admin';
+        if (review.active === false && !isAdmin) { return renderNotFound(); }
+        return getCommentsForReview(id).then(function (comments) {
+          comments = comments || [];
+          comments.sort(function (a, b) { return a.createdAt - b.createdAt; });
+          let tr = lieuById(review.lieu);
+          let canDelete = currentUser && (currentUser.role === 'admin' || currentUser.id === review.userId);
+
+          let commentsHtml = comments.length ? comments.map(function (c) {
+            let canDelC = currentUser && (currentUser.role === 'admin' || currentUser.id === c.userId);
+            return '<li class="comment d-flex gap-3">' +
+              '<span class="avatar" aria-hidden="true">' + escapeHtml(initials(c.authorName)) + '</span>' +
+              '<div class="flex-grow-1">' +
+                '<div class="d-flex justify-content-between align-items-center flex-wrap gap-2">' +
+                  '<p class="mb-1 fw-bold">' + escapeHtml(c.authorName) + ' <span class="text-soft fw-normal">\u2022 ' + escapeHtml(fmtDate(c.createdAt)) + '</span></p>' +
+                  (canDelC ? '<button type="button" class="btn btn-acc-danger btn-sm js-del-comment" data-id="' + c.id + '"><i class="bi bi-trash me-1" aria-hidden="true"></i>Supprimer</button>' : '') +
+                '</div>' +
+                '<p class="mb-0">' + nl2br(c.text) + '</p>' +
+              '</div>' +
+            '</li>';
+          }).join('') : '<li class="text-soft">Aucun commentaire pour l\u2019instant. Lancez l\u2019échange&nbsp;!</li>';
+
+          let commentForm = currentUser
+            ? '<form id="comment-form" novalidate class="mt-3" aria-label="Ajouter un commentaire">' +
+                '<label class="form-label" for="comment-text">Votre commentaire</label>' +
+                '<textarea class="form-control" id="comment-text" rows="3" required maxlength="1500" aria-describedby="comment-help"></textarea>' +
+                '<div id="comment-help" class="form-text">Restez bienveillant·e : nous formons une communauté d\u2019entraide.</div>' +
+                '<div class="invalid-feedback" id="comment-error">Merci d\u2019écrire un message avant d\u2019envoyer.</div>' +
+                '<button type="submit" class="btn btn-acc-primary mt-2"><i class="bi bi-send me-1" aria-hidden="true"></i>Publier</button>' +
+              '</form>'
+            : '<div class="alert alert-info mt-3 mb-0" role="alert"><i class="bi bi-info-circle me-1" aria-hidden="true"></i><a href="#/connexion">Connectez-vous</a> pour participer à la discussion.</div>';
+
+          $('#view').innerHTML =
+            '<nav aria-label="Fil d\u2019Ariane" class="mb-3">' +
+              '<ol class="breadcrumb mb-0">' +
+                '<li class="breadcrumb-item"><a href="#/accueil">Accueil</a></li>' +
+                '<li class="breadcrumb-item active" aria-current="page">Avis</li>' +
+              '</ol>' +
+            '</nav>' +
+            '<section aria-labelledby="view-heading">' +
+              (isAdmin && review.active === false ? '<div class="alert alert-off mb-3" role="alert"><i class="bi bi-eye-slash-fill me-1" aria-hidden="true"></i>Cet avis est <strong>désactivé</strong> : il n\u2019est pas visible par le public. <a href="#/modifier-avis/' + encodeURIComponent(review.id) + '" class="link-off">Modifier / réactiver</a></div>' : '') +
+              (isAdmin ? '<div class="mb-3"><a class="btn btn-acc-ghost" href="#/modifier-avis/' + encodeURIComponent(review.id) + '"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Modifier cet avis</a></div>' : '') +
+              '<article class="acc-card mb-4">' +
+                '<div class="card-body">' +
+                  '<div class="d-flex align-items-center gap-3 mb-3">' +
+                    '<span class="avatar" aria-hidden="true">' + escapeHtml(initials(review.authorName)) + '</span>' +
+                    '<div><p class="mb-0 fw-bold">' + escapeHtml(review.authorName) + '</p>' +
+                    '<p class="mb-0 text-soft">' + escapeHtml(fmtDate(review.createdAt)) + '</p></div>' +
+                  '</div>' +
+                  '<div class="d-flex flex-wrap gap-2 mb-3">' +
+                    '<span class="badge-pill badge-city"><i class="bi bi-geo-alt-fill" aria-hidden="true"></i>' + escapeHtml(review.city) + '</span>' +
+                    '<span class="badge-pill"><i class="bi ' + tr.icon + '" aria-hidden="true"></i>' + escapeHtml(tr.label) + '</span>' +
+                    starsHtml(review.rating) +
+                  '</div>' +
+                  '<h2 class="h1 view-title mb-3">' + escapeHtml(review.title) + '</h2>' +
+                  mediaHtml(review, 'detail') +
+                  (review.experience ? '<h2 class="h5">Mon expérience</h2><p>' + nl2br(review.experience) + '</p>' : '') +
+                  '<div class="row g-3 mt-1">' +
+                    (review.pros && review.pros.trim() ? '<div class="col-12 col-md-6"><div class="pros-box h-100"><h3 class="h6"><i class="bi bi-hand-thumbs-up-fill me-1" aria-hidden="true"></i>Les plus</h3><p class="mb-0">' + nl2br(review.pros) + '</p></div></div>' : '') +
+                    (review.cons && review.cons.trim() ? '<div class="col-12 col-md-6"><div class="cons-box h-100"><h3 class="h6"><i class="bi bi-hand-thumbs-down-fill me-1" aria-hidden="true"></i>Les moins</h3><p class="mb-0">' + nl2br(review.cons) + '</p></div></div>' : '') +
+                  '</div>' +
+                  (canDelete ? '<hr class="divider my-3"><button type="button" class="btn btn-acc-danger" id="btn-del-review"><i class="bi bi-trash me-1" aria-hidden="true"></i>Supprimer cet avis</button>' : '') +
+                '</div>' +
+              '</article>' +
+
+              '<section class="acc-card" aria-labelledby="comments-heading">' +
+                '<div class="card-body">' +
+                  '<h2 id="comments-heading" class="h4 mb-3"><i class="bi bi-chat-left-dots me-1" aria-hidden="true"></i>Échanges (' + comments.length + ')</h2>' +
+                  '<ul class="list-unstyled d-flex flex-column gap-3 mb-0" id="comment-list">' + commentsHtml + '</ul>' +
+                  commentForm +
+                '</div>' +
+              '</section>' +
+            '</section>';
+
+          // Suppression de l'avis
+          let delBtn = $('#btn-del-review');
+          if (delBtn) {
+            delBtn.addEventListener('click', function () {
+              if (!window.confirm('Voulez-vous vraiment supprimer cet avis ? Cette action est définitive.')) { return; }
+              Promise.all((comments).map(function (c) { return dbDelete('comments', c.id); }))
+                .then(function () { return dbDelete('reviews', review.id); })
+                .then(function () { toast('Avis supprimé.', 'success'); announce('Avis supprimé.'); navigate('#/accueil'); })
+                .catch(function () { toast('Suppression impossible.', 'error'); });
+            });
+          }
+
+          // Suppression de commentaire
+          $all('.js-del-comment').forEach(function (b) {
+            b.addEventListener('click', function () {
+              let cid = b.getAttribute('data-id');
+              if (!window.confirm('Supprimer ce commentaire ?')) { return; }
+              dbDelete('comments', cid).then(function () { toast('Commentaire supprimé.', 'success'); router(); })
+                .catch(function () { toast('Suppression impossible.', 'error'); });
+            });
+          });
+
+          // Ajout de commentaire
+          let cf = $('#comment-form');
+          if (cf) {
+            cf.addEventListener('submit', function (e) {
+              e.preventDefault();
+              let ta = $('#comment-text');
+              let val = ta.value.trim();
+              if (!val) { ta.classList.add('is-invalid'); ta.focus(); return; }
+              ta.classList.remove('is-invalid');
+              let comment = { id: uid(), reviewId: review.id, userId: currentUser.id, authorName: currentUser.displayName, text: val, createdAt: Date.now() };
+              dbPut('comments', comment).then(function () {
+                toast('Commentaire publié.', 'success');
+                announce('Votre commentaire a été publié.');
+                router();
+              }).catch(function () { toast('Publication impossible.', 'error'); });
+            });
+          }
+        });
+      });
+    }
+
+    /* =====================================================================
+       VUE — DÉPOSER UN AVIS (glisser-déposer + diaporama)
+       ===================================================================== */
+    let draftImages = [];
+
+    function renderNew() {
+      draftImages = [];
+      let lieuOptions = LIEUX.map(function (t) {
+        return '<option value="' + t.id + '">' + escapeHtml(t.label) + '</option>';
+      }).join('');
+
+      $('#view').innerHTML =
+        '<section aria-labelledby="view-heading">' +
+          '<h2 class="h1 view-title mb-2"><i class="bi bi-pencil-square me-2" aria-hidden="true"></i>Déposer un avis</h2>' +
+          '<p class="lead mb-4">Décrivez votre expérience d\u2019un lieu de culture (théâtre, musée, exposition, concert\u2026). Vos retours, positifs comme négatifs, sont précieux pour la communauté.</p>' +
+          '<form id="review-form" novalidate class="acc-card"><div class="card-body">' +
+            '<div class="row g-3">' +
+              '<div class="col-12 col-md-8">' +
+                '<label class="form-label" for="r-title">Titre de votre avis <span class="text-danger" aria-hidden="true">*</span></label>' +
+                '<input class="form-control" id="r-title" type="text" required maxlength="120" aria-describedby="r-title-err">' +
+                '<div class="invalid-feedback" id="r-title-err">Merci d\u2019indiquer un titre.</div>' +
+              '</div>' +
+              '<div class="col-12 col-md-4">' +
+                '<label class="form-label" for="r-rating">Note d\u2019accessibilité <span class="text-danger" aria-hidden="true">*</span></label>' +
+                '<select class="form-select" id="r-rating" required>' +
+                  '<option value="">Choisir\u2026</option>' +
+                  '<option value="5">5 ★ — Parfaitement accessible</option>' +
+                  '<option value="4">4 ★ — Très bien</option>' +
+                  '<option value="3">3 ★ — Correct</option>' +
+                  '<option value="2">2 ★ — Difficile</option>' +
+                  '<option value="1">1 ★ — Inaccessible</option>' +
+                '</select>' +
+                '<div class="invalid-feedback">Merci de donner une note.</div>' +
+              '</div>' +
+              '<div class="col-12 col-md-6">' +
+                '<label class="form-label" for="r-city">Ville <span class="text-danger" aria-hidden="true">*</span></label>' +
+                '<input class="form-control" id="r-city" type="text" required maxlength="80" placeholder="Ex. : Bordeaux" aria-describedby="r-city-err">' +
+                '<div class="invalid-feedback" id="r-city-err">Merci d\u2019indiquer la ville.</div>' +
+              '</div>' +
+              '<div class="col-12 col-md-6">' +
+                '<label class="form-label" for="r-lieu">Type de lieu culturel <span class="text-danger" aria-hidden="true">*</span></label>' +
+                '<select class="form-select" id="r-lieu" required><option value="">Choisir\u2026</option>' + lieuOptions + '</select>' +
+                '<div class="invalid-feedback">Merci de choisir un type de lieu culturel.</div>' +
+              '</div>' +
+              '<div class="col-12">' +
+                '<label class="form-label" for="r-experience">Votre expérience</label>' +
+                '<textarea class="form-control" id="r-experience" rows="4" maxlength="3000" placeholder="Racontez votre visite, l\u2019accueil, l\u2019accessibilité des espaces et des \u0153uvres\u2026"></textarea>' +
+              '</div>' +
+              '<div class="col-12 col-md-6">' +
+                '<label class="form-label" for="r-pros"><i class="bi bi-hand-thumbs-up-fill me-1" aria-hidden="true"></i>Les plus</label>' +
+                '<textarea class="form-control" id="r-pros" rows="3" maxlength="1000" placeholder="Ce qui facilite l\u2019accès\u2026"></textarea>' +
+              '</div>' +
+              '<div class="col-12 col-md-6">' +
+                '<label class="form-label" for="r-cons"><i class="bi bi-hand-thumbs-down-fill me-1" aria-hidden="true"></i>Les moins</label>' +
+                '<textarea class="form-control" id="r-cons" rows="3" maxlength="1000" placeholder="Les obstacles rencontrés\u2026"></textarea>' +
+              '</div>' +
+
+              dropzoneBlock('Photos (facultatif, ' + MAX_IMAGES + ' maximum)', '<strong>Glissez-déposez</strong> vos images ici', 'ou activez cette zone pour parcourir vos fichiers. Plusieurs photos&nbsp;? Elles deviennent un diaporama à points.', 'Sélectionner des images à téléverser') +
+            '</div>' +
+            '<hr class="divider my-4">' +
+            '<div class="d-flex flex-wrap gap-2">' +
+              '<button type="submit" class="btn btn-acc-primary btn-lg"><i class="bi bi-send me-1" aria-hidden="true"></i>Publier mon avis</button>' +
+              '<a href="#/accueil" class="btn btn-acc-ghost btn-lg">Annuler</a>' +
+            '</div>' +
+          '</div></form>' +
+        '</section>';
+
+      wireDropzone();
+
+      $('#review-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let fields = [
+          { el: $('#r-title'), test: function (v) { return v.trim().length > 0; } },
+          { el: $('#r-rating'), test: function (v) { return v !== ''; } },
+          { el: $('#r-city'), test: function (v) { return v.trim().length > 0; } },
+          { el: $('#r-lieu'), test: function (v) { return v !== ''; } }
+        ];
+        let firstInvalid = null;
+        fields.forEach(function (f) {
+          let ok = f.test(f.el.value);
+          f.el.classList.toggle('is-invalid', !ok);
+          if (!ok && !firstInvalid) { firstInvalid = f.el; }
+        });
+        if (firstInvalid) { firstInvalid.focus(); toast('Merci de compléter les champs obligatoires.', 'error'); return; }
+
+        let review = {
+          id: uid(),
+          userId: currentUser.id,
+          authorName: currentUser.displayName,
+          title: $('#r-title').value.trim(),
+          rating: Number($('#r-rating').value),
+          city: $('#r-city').value.trim(),
+          lieu: $('#r-lieu').value,
+          experience: $('#r-experience').value.trim(),
+          pros: $('#r-pros').value.trim(),
+          cons: $('#r-cons').value.trim(),
+          images: draftImages.slice(),
+          createdAt: Date.now()
+        };
+        dbPut('reviews', review).then(function () {
+          toast('Votre avis a été publié. Merci pour la communauté !', 'success');
+          announce('Avis publié avec succès.');
+          draftImages = [];
+          navigate('#/avis/' + encodeURIComponent(review.id));
+        }).catch(function () { toast('Publication impossible.', 'error'); });
+      });
+
+      return Promise.resolve();
+    }
+
+    /* Bloc « zone de dépôt d'images » partagé par les vues « déposer » et « modifier ».
+       Centralisé ici pour éviter de répéter ses identifiants dans deux templates. */
+    function dropzoneBlock(labelText, introHtml, helpText, inputAria) {
+      return '<div class="col-12">' +
+        '<span class="form-label d-block" id="dz-label">' + labelText + '</span>' +
+        '<div class="dropzone" id="dropzone" role="button" tabindex="0" aria-labelledby="dz-label" aria-describedby="dz-help">' +
+          '<i class="bi bi-cloud-arrow-up" aria-hidden="true"></i>' +
+          '<p class="mb-1 mt-2">' + introHtml + '</p>' +
+          '<p class="mb-2" id="dz-help">' + helpText + '</p>' +
+          '<span class="btn btn-acc-ghost"><i class="bi bi-folder2-open me-1" aria-hidden="true"></i>Parcourir mes fichiers</span>' +
+          '<input type="file" id="file-input" accept="image/*" multiple class="visually-hidden" aria-label="' + inputAria + '">' +
+        '</div>' +
+        '<div class="thumb-grid mt-3" id="thumb-grid" aria-live="polite"></div>' +
+      '</div>';
+    }
+
+    function wireDropzone() {
+      let dz = $('#dropzone');
+      let input = $('#file-input');
+      if (!dz || !input) { return; }
+
+      function openPicker() { input.click(); }
+      dz.addEventListener('click', function (e) {
+        if (e.target === input) { return; }
+        openPicker();
+      });
+      dz.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') { e.preventDefault(); openPicker(); }
+      });
+      input.addEventListener('click', function (e) { e.stopPropagation(); });
+      input.addEventListener('change', function () { handleFiles(input.files); input.value = ''; });
+
+      ['dragenter', 'dragover'].forEach(function (evt) {
+        dz.addEventListener(evt, function (e) { e.preventDefault(); e.stopPropagation(); dz.classList.add('is-dragover'); });
+      });
+      ['dragleave', 'dragend'].forEach(function (evt) {
+        dz.addEventListener(evt, function (e) { e.preventDefault(); e.stopPropagation(); dz.classList.remove('is-dragover'); });
+      });
+      dz.addEventListener('drop', function (e) {
+        e.preventDefault(); e.stopPropagation(); dz.classList.remove('is-dragover');
+        if (e.dataTransfer && e.dataTransfer.files) { handleFiles(e.dataTransfer.files); }
+      });
+    }
+
+    function handleFiles(fileList) {
+      let files = Array.prototype.slice.call(fileList || []).filter(function (f) { return f.type.indexOf('image/') === 0; });
+      if (!files.length) { toast('Seules les images sont acceptées.', 'error'); return; }
+      let room = MAX_IMAGES - draftImages.length;
+      if (room <= 0) { toast('Vous avez atteint le maximum de ' + MAX_IMAGES + ' photos.', 'info'); return; }
+      files = files.slice(0, room);
+      Promise.all(files.map(function (f) {
+        return fileToResizedDataUrl(f).catch(function () { return null; });
+      })).then(function (results) {
+        let added = 0;
+        results.forEach(function (r) { if (r) { draftImages.push(r); added++; } });
+        renderThumbs();
+        if (added) { announce(added + ' photo(s) ajoutée(s). Total : ' + draftImages.length + '.'); }
+      });
+    }
+
+    function renderThumbs() {
+      let grid = $('#thumb-grid');
+      if (!grid) { return; }
+      if (!draftImages.length) { grid.innerHTML = ''; return; }
+      grid.innerHTML = draftImages.map(function (img, i) {
+        return '<div class="thumb">' +
+          '<img src="' + img.src + '" alt="Aperçu : ' + escapeHtml(img.alt || ('photo ' + (i + 1))) + '">' +
+          '<button type="button" class="thumb-remove js-thumb-del" data-i="' + i + '" aria-label="Retirer la photo ' + (i + 1) + '"><i class="bi bi-x-lg" aria-hidden="true"></i></button>' +
+        '</div>';
+      }).join('') +
+      (draftImages.length > 1 ? '<p class="w-100 mb-0 text-soft mt-1"><i class="bi bi-images me-1" aria-hidden="true"></i>' + draftImages.length + ' photos : un diaporama à points sera créé automatiquement.</p>' : '');
+      $all('.js-thumb-del', grid).forEach(function (b) {
+        b.addEventListener('click', function () {
+          let idx = Number(b.getAttribute('data-i'));
+          draftImages.splice(idx, 1);
+          renderThumbs();
+          announce('Photo retirée. Total : ' + draftImages.length + '.');
+        });
+      });
+    }
+
+    /* =====================================================================
+       VUE — CONNEXION / INSCRIPTION
+       ===================================================================== */
+    function renderAuth(route) {
+      let isRegister = route.name === 'inscription';
+      $('#view').innerHTML =
+        '<section aria-labelledby="view-heading" class="row justify-content-center">' +
+          '<div class="col-12 col-md-9 col-lg-7">' +
+            '<h2 class="h1 view-title mb-2 text-center">' +
+              (isRegister ? '<i class="bi bi-person-plus me-2" aria-hidden="true"></i>Créer un compte' : '<i class="bi bi-box-arrow-in-right me-2" aria-hidden="true"></i>Connexion') +
+            '</h2>' +
+            '<p class="lead text-center mb-4">' + (isRegister ? 'Rejoignez la communauté et partagez vos avis.' : 'Accédez à votre espace personnel.') + '</p>' +
+            '<div class="acc-card"><div class="card-body">' +
+              '<ul class="nav nav-pills justify-content-center gap-2 mb-4" role="tablist" aria-label="Choisir connexion ou inscription">' +
+                '<li class="nav-item"><a class="nav-link' + (!isRegister ? ' active' : '') + '" href="#/connexion"' + (!isRegister ? ' aria-current="page"' : '') + '>Connexion</a></li>' +
+                '<li class="nav-item"><a class="nav-link' + (isRegister ? ' active' : '') + '" href="#/inscription"' + (isRegister ? ' aria-current="page"' : '') + '>Inscription</a></li>' +
+              '</ul>' +
+              '<form id="auth-form" novalidate>' +
+                (isRegister ?
+                  '<div class="mb-3"><label class="form-label" for="a-display">Nom affiché <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<input class="form-control" id="a-display" type="text" required maxlength="60" autocomplete="name" aria-describedby="a-display-err">' +
+                  '<div class="invalid-feedback" id="a-display-err">Merci d\u2019indiquer un nom affiché.</div></div>' : '') +
+                '<div class="mb-3"><label class="form-label" for="a-username">Identifiant <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<input class="form-control" id="a-username" type="text" required maxlength="40" autocomplete="username" aria-describedby="a-username-err">' +
+                  '<div class="invalid-feedback" id="a-username-err">Merci d\u2019indiquer un identifiant.</div></div>' +
+                '<div class="mb-3"><label class="form-label" for="a-password">Mot de passe <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<input class="form-control" id="a-password" type="password" required minlength="4" autocomplete="' + (isRegister ? 'new-password' : 'current-password') + '" aria-describedby="a-password-help a-password-err">' +
+                  (isRegister ? '<div id="a-password-help" class="form-text">Au moins 4 caractères. Stocké uniquement dans votre navigateur, sous forme hachée.</div>' : '') +
+                  '<div class="invalid-feedback" id="a-password-err">Mot de passe trop court (4 caractères minimum).</div></div>' +
+                '<button type="submit" class="btn btn-acc-primary btn-lg w-100">' +
+                  (isRegister ? '<i class="bi bi-check2-circle me-1" aria-hidden="true"></i>Créer mon compte' : '<i class="bi bi-box-arrow-in-right me-1" aria-hidden="true"></i>Se connecter') +
+                '</button>' +
+              '</form>' +
+              (!isRegister ? '<p class="text-soft text-center mt-4 mb-0">Compte de démonstration administrateur :<br><strong>admin</strong> / <strong>admin123</strong></p>' : '') +
+            '</div></div>' +
+          '</div>' +
+        '</section>';
+
+      $('#auth-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        let username = $('#a-username').value.trim();
+        let password = $('#a-password').value;
+        let uOk = username.length > 0;
+        let pOk = password.length >= 4;
+        $('#a-username').classList.toggle('is-invalid', !uOk);
+        $('#a-password').classList.toggle('is-invalid', !pOk);
+
+        if (isRegister) {
+          let display = $('#a-display').value.trim();
+          let dOk = display.length > 0;
+          $('#a-display').classList.toggle('is-invalid', !dOk);
+          if (!dOk || !uOk || !pOk) { return; }
+          getUserByUsername(username).then(function (existing) {
+            if (existing) {
+              $('#a-username').classList.add('is-invalid');
+              $('#a-username-err').textContent = 'Cet identifiant est déjà utilisé.';
+              toast('Cet identifiant existe déjà.', 'error');
+              $('#a-username').focus();
+              return;
+            }
+            let user = {
+              id: uid(),
+              username: username.toLowerCase(),
+              displayName: display,
+              passwordHash: hashStr(password),
+              role: 'user',
+              createdAt: Date.now()
+            };
+            dbPut('users', user).then(function () {
+              setSession(user);
+              toast('Bienvenue, ' + user.displayName + ' !', 'success');
+              announce('Compte créé. Vous êtes connecté·e.');
+              navigate('#/accueil');
+            });
+          });
+        } else {
+          if (!uOk || !pOk) { return; }
+          getUserByUsername(username).then(function (user) {
+            if (!user || user.passwordHash !== hashStr(password)) {
+              toast('Identifiant ou mot de passe incorrect.', 'error');
+              $('#a-password').classList.add('is-invalid');
+              $('#a-password-err').textContent = 'Identifiant ou mot de passe incorrect.';
+              $('#a-password').focus();
+              return;
+            }
+            if (user.active === false) {
+              toast('Ce compte est désactivé. Contactez l\u2019administration.', 'error');
+              announce('Connexion refusée : compte désactivé.');
+              $('#a-username').focus();
+              return;
+            }
+            setSession(user);
+            announce('Connexion réussie.');
+            navigate('#/accueil');
+          });
+        }
+      });
+
+      return Promise.resolve();
+    }
+
+    /* =====================================================================
+       VUE — MON ESPACE
+       ===================================================================== */
+    function renderSpace() {
+      return dbGetAll('reviews').then(function (reviews) {
+        return getCommentsCounts().then(function (counts) {
+          let mine = (reviews || []).filter(function (r) { return r.userId === currentUser.id; });
+          mine.sort(function (a, b) { return b.createdAt - a.createdAt; });
+          let avg = mine.length ? (mine.reduce(function (s, r) { return s + Number(r.rating || 0); }, 0) / mine.length).toFixed(1) : '0';
+
+          let cards = mine.length
+            ? mine.map(function (r) { return reviewCardHtml(r, counts[r.id] || 0); }).join('')
+            : '<div class="col-12"><div class="empty-state acc-card"><div class="card-body"><i class="bi bi-journal-text" aria-hidden="true"></i><p class="mt-3 mb-3">Vous n\u2019avez pas encore publié d\u2019avis.</p><a class="btn btn-acc-primary" href="#/nouveau"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Déposer mon premier avis</a></div></div></div>';
+
+          $('#view').innerHTML =
+            '<section aria-labelledby="view-heading">' +
+              '<div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">' +
+                '<div>' +
+                  '<h2 class="h1 view-title mb-1"><i class="bi bi-person-circle me-2" aria-hidden="true"></i>Mon espace</h2>' +
+                  '<p class="lead mb-0">Bonjour ' + escapeHtml(currentUser.displayName) + ', voici vos contributions.</p>' +
+                '</div>' +
+                '<a class="btn btn-acc-primary" href="#/nouveau"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Nouvel avis</a>' +
+              '</div>' +
+              '<div class="row g-3 mb-4">' +
+                '<div class="col-6 col-md-4"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + mine.length + '</p><p class="mb-0 text-soft">Avis publiés</p></div></div></div>' +
+                '<div class="col-6 col-md-4"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + avg + '</p><p class="mb-0 text-soft">Note moyenne donnée</p></div></div></div>' +
+                '<div class="col-12 col-md-4"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + escapeHtml(initials(currentUser.displayName)) + '</p><p class="mb-0 text-soft">' + escapeHtml(currentUser.displayName) + '</p></div></div></div>' +
+              '</div>' +
+              '<h2 class="h4 mb-3">Mes avis</h2>' +
+              '<div class="row g-4">' + cards + '</div>' +
+            '</section>';
+        });
+      });
+    }
+
+    /* =====================================================================
+       VUE — ADMINISTRATION
+       ===================================================================== */
+    function renderAdmin() {
+      return Promise.all([dbGetAll('users'), dbGetAll('reviews'), dbGetAll('comments')]).then(function (res) {
+        let users = res[0] || [], reviews = res[1] || [], comments = res[2] || [];
+        reviews.sort(function (a, b) { return b.createdAt - a.createdAt; });
+        comments.sort(function (a, b) { return b.createdAt - a.createdAt; });
+
+        let usersRows = users.map(function (u) {
+          let isSelf = u.id === currentUser.id;
+          let isActive = u.active !== false;
+          return '<tr>' +
+            '<td><span class="avatar avatar-sm me-2 d-inline-flex" aria-hidden="true">' + escapeHtml(initials(u.displayName)) + '</span>' + escapeHtml(u.displayName) + '</td>' +
+            '<td>' + escapeHtml(u.username) + '</td>' +
+            '<td><span class="badge-pill ' + (u.role === 'admin' ? 'badge-city' : '') + '">' + (u.role === 'admin' ? 'Administrateur' : 'Membre') + '</span></td>' +
+            '<td><span class="badge-pill ' + (isActive ? 'badge-pill-on' : 'badge-pill-off') + '"><i class="bi ' + (isActive ? 'bi-check-circle-fill' : 'bi-slash-circle-fill') + '" aria-hidden="true"></i>' + (isActive ? 'Actif' : 'Désactivé') + '</span></td>' +
+            '<td class="text-end">' +
+              '<a class="btn btn-acc-outline btn-sm me-1 mb-1" href="#/modifier-membre/' + encodeURIComponent(u.id) + '"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Modifier</a>' +
+              (isSelf ? '<span class="text-soft">(vous)</span>' :
+                '<button type="button" class="btn btn-acc-ghost btn-sm me-1 mb-1 js-toggle-user" data-id="' + u.id + '">' + (isActive ? '<i class="bi bi-toggle-on me-1" aria-hidden="true"></i>Désactiver' : '<i class="bi bi-toggle-off me-1" aria-hidden="true"></i>Activer') + '</button>' +
+                '<button type="button" class="btn btn-acc-ghost btn-sm me-1 mb-1 js-role" data-id="' + u.id + '" data-role="' + u.role + '">' + (u.role === 'admin' ? 'Rétrograder' : 'Promouvoir admin') + '</button>' +
+                '<button type="button" class="btn btn-acc-danger btn-sm mb-1 js-del-user" data-id="' + u.id + '"><i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden"> Supprimer ' + escapeHtml(u.displayName) + '</span></button>') +
+            '</td>' +
+          '</tr>';
+        }).join('') || '<tr><td colspan="5" class="text-soft">Aucun utilisateur.</td></tr>';
+
+        let reviewsRows = reviews.map(function (r) {
+          let tr = lieuById(r.lieu);
+          let isActive = r.active !== false;
+          return '<tr>' +
+            '<td><a href="#/avis/' + encodeURIComponent(r.id) + '">' + escapeHtml(r.title) + '</a></td>' +
+            '<td>' + escapeHtml(r.city) + '</td>' +
+            '<td><i class="bi ' + tr.icon + ' me-1" aria-hidden="true"></i>' + escapeHtml(tr.label) + '</td>' +
+            '<td>' + escapeHtml(r.authorName) + '</td>' +
+            '<td>' + Number(r.rating) + ' ★</td>' +
+            '<td><span class="badge-pill ' + (isActive ? 'badge-pill-on' : 'badge-pill-off') + '"><i class="bi ' + (isActive ? 'bi-eye-fill' : 'bi-eye-slash-fill') + '" aria-hidden="true"></i>' + (isActive ? 'Visible' : 'Désactivé') + '</span></td>' +
+            '<td class="text-end">' +
+              '<a class="btn btn-acc-outline btn-sm me-1 mb-1" href="#/modifier-avis/' + encodeURIComponent(r.id) + '"><i class="bi bi-pencil-square me-1" aria-hidden="true"></i>Modifier</a>' +
+              '<button type="button" class="btn btn-acc-ghost btn-sm me-1 mb-1 js-toggle-review" data-id="' + r.id + '">' + (isActive ? '<i class="bi bi-toggle-on me-1" aria-hidden="true"></i>Désactiver' : '<i class="bi bi-toggle-off me-1" aria-hidden="true"></i>Activer') + '</button>' +
+              '<button type="button" class="btn btn-acc-danger btn-sm mb-1 js-del-review-admin" data-id="' + r.id + '"><i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden"> Supprimer l\u2019avis ' + escapeHtml(r.title) + '</span></button>' +
+            '</td>' +
+          '</tr>';
+        }).join('') || '<tr><td colspan="7" class="text-soft">Aucun avis.</td></tr>';
+
+        let commentsRows = comments.map(function (c) {
+          return '<tr>' +
+            '<td>' + escapeHtml(c.authorName) + '</td>' +
+            '<td>' + escapeHtml(truncate(c.text, 90)) + '</td>' +
+            '<td>' + escapeHtml(fmtDate(c.createdAt)) + '</td>' +
+            '<td class="text-end"><button type="button" class="btn btn-acc-danger btn-sm js-del-comment-admin" data-id="' + c.id + '"><i class="bi bi-trash" aria-hidden="true"></i><span class="visually-hidden"> Supprimer ce commentaire</span></button></td>' +
+          '</tr>';
+        }).join('') || '<tr><td colspan="4" class="text-soft">Aucun commentaire.</td></tr>';
+
+        $('#view').innerHTML =
+          '<section aria-labelledby="view-heading">' +
+            '<h2 class="h1 view-title mb-2"><i class="bi bi-shield-lock me-2" aria-hidden="true"></i>Administration</h2>' +
+            '<p class="lead mb-4">Gérez les membres, les avis et les échanges de la communauté.</p>' +
+
+            '<div class="row g-3 mb-4">' +
+              '<div class="col-6 col-md-3"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + users.length + '</p><p class="mb-0 text-soft">Membres</p></div></div></div>' +
+              '<div class="col-6 col-md-3"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + reviews.length + '</p><p class="mb-0 text-soft">Avis</p></div></div></div>' +
+              '<div class="col-6 col-md-3"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + comments.length + '</p><p class="mb-0 text-soft">Commentaires</p></div></div></div>' +
+              '<div class="col-6 col-md-3"><div class="acc-card stat-card"><div class="card-body"><p class="stat-num">' + countCities(reviews) + '</p><p class="mb-0 text-soft">Villes couvertes</p></div></div></div>' +
+            '</div>' +
+
+            '<ul class="nav nav-pills gap-2 mb-3" role="tablist" aria-label="Sections d\u2019administration">' +
+              '<li class="nav-item" role="presentation"><button class="nav-link active" id="tab-reviews" data-bs-toggle="pill" data-bs-target="#pane-reviews" type="button" role="tab" aria-controls="pane-reviews" aria-selected="true"><i class="bi bi-card-text me-1" aria-hidden="true"></i>Avis</button></li>' +
+              '<li class="nav-item" role="presentation"><button class="nav-link" id="tab-users" data-bs-toggle="pill" data-bs-target="#pane-users" type="button" role="tab" aria-controls="pane-users" aria-selected="false"><i class="bi bi-people me-1" aria-hidden="true"></i>Membres</button></li>' +
+              '<li class="nav-item" role="presentation"><button class="nav-link" id="tab-comments" data-bs-toggle="pill" data-bs-target="#pane-comments" type="button" role="tab" aria-controls="pane-comments" aria-selected="false"><i class="bi bi-chat-dots me-1" aria-hidden="true"></i>Commentaires</button></li>' +
+              '<li class="nav-item" role="presentation"><button class="nav-link" id="tab-data" data-bs-toggle="pill" data-bs-target="#pane-data" type="button" role="tab" aria-controls="pane-data" aria-selected="false"><i class="bi bi-database me-1" aria-hidden="true"></i>Données</button></li>' +
+            '</ul>' +
+
+            '<div class="tab-content">' +
+              '<div class="tab-pane fade show active" id="pane-reviews" role="tabpanel" aria-labelledby="tab-reviews" tabindex="0">' +
+                '<div class="acc-card"><div class="card-body table-responsive">' +
+                  '<table class="table align-middle"><caption class="visually-hidden">Liste des avis publiés</caption>' +
+                  '<thead><tr><th scope="col">Titre</th><th scope="col">Ville</th><th scope="col">Lieu</th><th scope="col">Auteur</th><th scope="col">Note</th><th scope="col">Statut</th><th scope="col" class="text-end">Actions</th></tr></thead>' +
+                  '<tbody>' + reviewsRows + '</tbody></table>' +
+                '</div></div>' +
+              '</div>' +
+              '<div class="tab-pane fade" id="pane-users" role="tabpanel" aria-labelledby="tab-users" tabindex="0">' +
+                '<div class="acc-card"><div class="card-body table-responsive">' +
+                  '<table class="table align-middle"><caption class="visually-hidden">Liste des membres</caption>' +
+                  '<thead><tr><th scope="col">Nom</th><th scope="col">Identifiant</th><th scope="col">Rôle</th><th scope="col">Statut</th><th scope="col" class="text-end">Actions</th></tr></thead>' +
+                  '<tbody>' + usersRows + '</tbody></table>' +
+                '</div></div>' +
+              '</div>' +
+              '<div class="tab-pane fade" id="pane-comments" role="tabpanel" aria-labelledby="tab-comments" tabindex="0">' +
+                '<div class="acc-card"><div class="card-body table-responsive">' +
+                  '<table class="table align-middle"><caption class="visually-hidden">Liste des commentaires</caption>' +
+                  '<thead><tr><th scope="col">Auteur</th><th scope="col">Message</th><th scope="col">Date</th><th scope="col" class="text-end">Action</th></tr></thead>' +
+                  '<tbody>' + commentsRows + '</tbody></table>' +
+                '</div></div>' +
+              '</div>' +
+              '<div class="tab-pane fade" id="pane-data" role="tabpanel" aria-labelledby="tab-data" tabindex="0">' +
+                '<div class="acc-card"><div class="card-body">' +
+                  '<h2 class="h5">Sauvegarde et réinitialisation</h2>' +
+                  '<p class="text-soft">Exportez toutes les données de la communauté au format JSON, réimportez une sauvegarde pour restaurer instantanément les dernières données, ou réinitialisez la plateforme.</p>' +
+                  '<div class="d-flex flex-wrap gap-2">' +
+                    '<button type="button" class="btn btn-acc-primary" id="btn-export"><i class="bi bi-download me-1" aria-hidden="true"></i>Exporter (JSON)</button>' +
+                    '<button type="button" class="btn btn-acc-ghost" id="btn-import"><i class="bi bi-upload me-1" aria-hidden="true"></i>Importer (JSON)</button>' +
+                    '<input type="file" id="file-import" accept="application/json,.json" class="visually-hidden" aria-hidden="true" tabindex="-1">' +
+                    '<button type="button" class="btn btn-acc-danger" id="btn-reset"><i class="bi bi-exclamation-octagon me-1" aria-hidden="true"></i>Réinitialiser toutes les données</button>' +
+                  '</div>' +
+                  '<p class="text-soft mt-2 mb-0"><small><i class="bi bi-info-circle me-1" aria-hidden="true"></i>L\u2019import remplace les données actuelles par celles du fichier de sauvegarde sélectionné.</small></p>' +
+                '</div></div>' +
+              '</div>' +
+            '</div>' +
+          '</section>';
+
+        // Activer / désactiver un avis
+        $all('.js-toggle-review').forEach(function (b) {
+          b.addEventListener('click', function () {
+            let id = b.getAttribute('data-id');
+            dbGet('reviews', id).then(function (r) {
+              if (!r) { return; }
+              r.active = (r.active === false);
+              return dbPut('reviews', r).then(function () {
+                toast(r.active ? 'Avis réactivé (visible).' : 'Avis désactivé (masqué au public).', 'success');
+                announce(r.active ? 'Avis réactivé.' : 'Avis désactivé.');
+                router();
+              });
+            }).catch(function () { toast('Modification impossible.', 'error'); });
+          });
+        });
+        // Activer / désactiver un membre
+        $all('.js-toggle-user').forEach(function (b) {
+          b.addEventListener('click', function () {
+            let id = b.getAttribute('data-id');
+            if (id === currentUser.id) { return; }
+            dbGet('users', id).then(function (u) {
+              if (!u) { return; }
+              u.active = (u.active === false);
+              return dbPut('users', u).then(function () {
+                toast(u.active ? 'Compte réactivé.' : 'Compte désactivé (connexion bloquée).', 'success');
+                announce(u.active ? 'Compte réactivé.' : 'Compte désactivé.');
+                router();
+              });
+            }).catch(function () { toast('Modification impossible.', 'error'); });
+          });
+        });
+        // Rôles
+        $all('.js-role').forEach(function (b) {
+          b.addEventListener('click', function () {
+            let id = b.getAttribute('data-id');
+            dbGet('users', id).then(function (u) {
+              if (!u) { return; }
+              u.role = u.role === 'admin' ? 'user' : 'admin';
+              return dbPut('users', u).then(function () { toast('Rôle mis à jour.', 'success'); router(); });
+            }).catch(function () { toast('Modification impossible.', 'error'); });
+          });
+        });
+        // Suppression utilisateur
+        $all('.js-del-user').forEach(function (b) {
+          b.addEventListener('click', function () {
+            let id = b.getAttribute('data-id');
+            if (!window.confirm('Supprimer ce membre ? Ses avis et commentaires seront aussi supprimés.')) { return; }
+            Promise.all([dbGetAll('reviews'), dbGetAll('comments')]).then(function (rr) {
+              let delR = (rr[0] || []).filter(function (r) { return r.userId === id; }).map(function (r) { return dbDelete('reviews', r.id); });
+              let delC = (rr[1] || []).filter(function (c) { return c.userId === id; }).map(function (c) { return dbDelete('comments', c.id); });
+              return Promise.all(delR.concat(delC)).then(function () { return dbDelete('users', id); });
+            }).then(function () { toast('Membre supprimé.', 'success'); router(); })
+              .catch(function () { toast('Suppression impossible.', 'error'); });
+          });
+        });
+        // Suppression avis (admin)
+        $all('.js-del-review-admin').forEach(function (b) {
+          b.addEventListener('click', function () {
+            let id = b.getAttribute('data-id');
+            if (!window.confirm('Supprimer cet avis et ses commentaires ?')) { return; }
+            dbGetAll('comments').then(function (cs) {
+              let dels = (cs || []).filter(function (c) { return c.reviewId === id; }).map(function (c) { return dbDelete('comments', c.id); });
+              return Promise.all(dels).then(function () { return dbDelete('reviews', id); });
+            }).then(function () { toast('Avis supprimé.', 'success'); router(); })
+              .catch(function () { toast('Suppression impossible.', 'error'); });
+          });
+        });
+        // Suppression commentaire (admin)
+        $all('.js-del-comment-admin').forEach(function (b) {
+          b.addEventListener('click', function () {
+            let id = b.getAttribute('data-id');
+            if (!window.confirm('Supprimer ce commentaire ?')) { return; }
+            dbDelete('comments', id).then(function () { toast('Commentaire supprimé.', 'success'); router(); })
+              .catch(function () { toast('Suppression impossible.', 'error'); });
+          });
+        });
+        // Export
+        let exp = $('#btn-export');
+        if (exp) {
+          exp.addEventListener('click', function () {
+            Promise.all([dbGetAll('users'), dbGetAll('reviews'), dbGetAll('comments')]).then(function (d) {
+              let payload = { exportedAt: new Date().toISOString(), users: d[0], reviews: d[1], comments: d[2] };
+              let blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+              let url = URL.createObjectURL(blob);
+              let a = document.createElement('a');
+              a.href = url; a.download = 'acces-culture-export.json';
+              document.body.appendChild(a); a.click(); a.remove();
+              window.setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+              toast('Export téléchargé.', 'success');
+            });
+          });
+        }
+        // Import (restauration d'une sauvegarde JSON)
+        let imp = $('#btn-import');
+        let impFile = $('#file-import');
+        if (imp && impFile) {
+          imp.addEventListener('click', function () { impFile.value = ''; impFile.click(); });
+          impFile.addEventListener('change', function () {
+            let file = impFile.files && impFile.files[0];
+            if (!file) { return; }
+            let reader = new FileReader();
+            reader.onload = function () {
+              let data = null;
+              try { data = JSON.parse(reader.result); } catch (e) { data = null; }
+              if (!data || !Array.isArray(data.users) || !Array.isArray(data.reviews) || !Array.isArray(data.comments)) {
+                toast('Fichier invalide : sauvegarde JSON AccèsCulture attendue.', 'error');
+                impFile.value = '';
+                return;
+              }
+              if (!window.confirm('Importer cette sauvegarde remplacera TOUTES les données actuelles (membres, avis, commentaires) par celles du fichier. Continuer ?')) {
+                impFile.value = '';
+                return;
+              }
+              Promise.all([dbClear('users'), dbClear('reviews'), dbClear('comments')]).then(function () {
+                let ops = [];
+                data.users.forEach(function (u) { if (u && u.id) { ops.push(dbPut('users', u)); } });
+                data.reviews.forEach(function (r) { if (r && r.id) { ops.push(dbPut('reviews', r)); } });
+                data.comments.forEach(function (c) { if (c && c.id) { ops.push(dbPut('comments', c)); } });
+                return Promise.all(ops);
+              }).then(function () {
+                // Garde-fou : si la sauvegarde ne contient aucun administrateur actif,
+                // on rétablit le compte d'amorçage pour ne pas verrouiller l'accès.
+                let hasAdmin = data.users.some(function (u) { return u && u.role === 'admin' && u.active !== false; });
+                return hasAdmin ? null : seedData();
+              }).then(function () {
+                return loadSession();
+              }).then(function () {
+                impFile.value = '';
+                toast('Sauvegarde importée : ' + data.users.length + ' membre(s), ' + data.reviews.length + ' avis, ' + data.comments.length + ' commentaire(s) restaurés.', 'success');
+                announce('Sauvegarde restaurée.');
+                navigate('#/accueil');
+              }).catch(function () {
+                impFile.value = '';
+                toast('Importation impossible.', 'error');
+              });
+            };
+            reader.onerror = function () { toast('Lecture du fichier impossible.', 'error'); impFile.value = ''; };
+            reader.readAsText(file);
+          });
+        }
+        // Réinitialisation
+        let rst = $('#btn-reset');
+        if (rst) {
+          rst.addEventListener('click', function () {
+            if (!window.confirm('Réinitialiser TOUTES les données (membres, avis, commentaires) ? Action irréversible.')) { return; }
+            Promise.all([dbClear('users'), dbClear('reviews'), dbClear('comments')]).then(function () {
+              setSession(null);
+              return seedData();
+            }).then(function () {
+              toast('Données réinitialisées.', 'success');
+              navigate('#/accueil');
+            }).catch(function () { toast('Réinitialisation impossible.', 'error'); });
+          });
+        }
+      });
+    }
+
+    function countCities(reviews) {
+      let set = {};
+      (reviews || []).forEach(function (r) { if (r.city) { set[r.city.toLowerCase()] = true; } });
+      return Object.keys(set).length;
+    }
+
+    /* =====================================================================
+       VUE — ADMIN : MODIFIER UN AVIS (champs + images + statut)
+       ===================================================================== */
+    function renderEditReview(route) {
+      let id = route.param ? decodeURIComponent(route.param) : null;
+      if (!id) { return renderNotFound(); }
+      return dbGet('reviews', id).then(function (review) {
+        if (!review) { return renderNotFound(); }
+        draftImages = (review.images || []).slice();
+        let isActive = review.active !== false;
+        let lieuOptions = LIEUX.map(function (t) {
+          return '<option value="' + t.id + '"' + (t.id === review.lieu ? ' selected' : '') + '>' + escapeHtml(t.label) + '</option>';
+        }).join('');
+        function ratingOpt(v, label) { return '<option value="' + v + '"' + (Number(review.rating) === v ? ' selected' : '') + '>' + label + '</option>'; }
+
+        $('#view').innerHTML =
+          '<nav aria-label="Fil d\u2019Ariane" class="mb-3"><ol class="breadcrumb mb-0">' +
+            '<li class="breadcrumb-item"><a href="#/admin">Administration</a></li>' +
+            '<li class="breadcrumb-item active" aria-current="page">Modifier un avis</li>' +
+          '</ol></nav>' +
+          '<section aria-labelledby="view-heading">' +
+            '<h2 class="h1 view-title mb-2"><i class="bi bi-pencil-square me-2" aria-hidden="true"></i>Modifier l\u2019avis</h2>' +
+            '<p class="lead mb-4">Avis publié par ' + escapeHtml(review.authorName) + ' le ' + escapeHtml(fmtDate(review.createdAt)) + '.</p>' +
+            '<form id="edit-review-form" novalidate class="acc-card"><div class="card-body">' +
+              '<div class="row g-3">' +
+                '<div class="col-12 col-md-8">' +
+                  '<label class="form-label" for="er-title">Titre <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<input class="form-control" id="er-title" type="text" required maxlength="120" value="' + escapeHtml(review.title) + '">' +
+                  '<div class="invalid-feedback">Merci d\u2019indiquer un titre.</div>' +
+                '</div>' +
+                '<div class="col-12 col-md-4">' +
+                  '<label class="form-label" for="er-rating">Note <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<select class="form-select" id="er-rating" required>' +
+                    ratingOpt(5, '5 \u2605 \u2014 Parfaitement accessible') + ratingOpt(4, '4 \u2605 \u2014 Tr\u00e8s bien') + ratingOpt(3, '3 \u2605 \u2014 Correct') + ratingOpt(2, '2 \u2605 \u2014 Difficile') + ratingOpt(1, '1 \u2605 \u2014 Inaccessible') +
+                  '</select>' +
+                '</div>' +
+                '<div class="col-12 col-md-6">' +
+                  '<label class="form-label" for="er-city">Ville <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<input class="form-control" id="er-city" type="text" required maxlength="80" value="' + escapeHtml(review.city) + '">' +
+                  '<div class="invalid-feedback">Merci d\u2019indiquer la ville.</div>' +
+                '</div>' +
+                '<div class="col-12 col-md-6">' +
+                  '<label class="form-label" for="er-lieu">Type de lieu culturel <span class="text-danger" aria-hidden="true">*</span></label>' +
+                  '<select class="form-select" id="er-lieu" required>' + lieuOptions + '</select>' +
+                '</div>' +
+                '<div class="col-12">' +
+                  '<label class="form-label" for="er-experience">Exp\u00e9rience</label>' +
+                  '<textarea class="form-control" id="er-experience" rows="4" maxlength="3000">' + escapeHtml(review.experience || '') + '</textarea>' +
+                '</div>' +
+                '<div class="col-12 col-md-6">' +
+                  '<label class="form-label" for="er-pros"><i class="bi bi-hand-thumbs-up-fill me-1" aria-hidden="true"></i>Les plus</label>' +
+                  '<textarea class="form-control" id="er-pros" rows="3" maxlength="1000">' + escapeHtml(review.pros || '') + '</textarea>' +
+                '</div>' +
+                '<div class="col-12 col-md-6">' +
+                  '<label class="form-label" for="er-cons"><i class="bi bi-hand-thumbs-down-fill me-1" aria-hidden="true"></i>Les moins</label>' +
+                  '<textarea class="form-control" id="er-cons" rows="3" maxlength="1000">' + escapeHtml(review.cons || '') + '</textarea>' +
+                '</div>' +
+                '<div class="col-12 col-md-6">' +
+                  '<label class="form-label" for="er-status">Statut de publication</label>' +
+                  '<select class="form-select" id="er-status">' +
+                    '<option value="active"' + (isActive ? ' selected' : '') + '>Visible par le public</option>' +
+                    '<option value="inactive"' + (!isActive ? ' selected' : '') + '>D\u00e9sactiv\u00e9 (masqu\u00e9)</option>' +
+                  '</select>' +
+                '</div>' +
+                dropzoneBlock('Photos de l\u2019avis (' + MAX_IMAGES + ' maximum)', '<strong>Glissez-d\u00e9posez</strong> de nouvelles images ici', 'ou activez cette zone pour parcourir vos fichiers. Retirez une image existante avec sa croix. Plusieurs photos forment un diaporama \u00e0 points.', 'S\u00e9lectionner des images \u00e0 ajouter') +
+              '</div>' +
+              '</div>' +
+              '<hr class="divider my-4">' +
+              '<div class="d-flex flex-wrap gap-2">' +
+                '<button type="submit" class="btn btn-acc-primary btn-lg"><i class="bi bi-save me-1" aria-hidden="true"></i>Enregistrer les modifications</button>' +
+                '<a href="#/admin" class="btn btn-acc-ghost btn-lg">Annuler</a>' +
+                '<a href="#/avis/' + encodeURIComponent(review.id) + '" class="btn btn-acc-outline btn-lg">Voir l\u2019avis</a>' +
+              '</div>' +
+            '</div></form>' +
+          '</section>';
+
+        wireDropzone();
+        renderThumbs();
+
+        $('#edit-review-form').addEventListener('submit', function (e) {
+          e.preventDefault();
+          let fields = [
+            { el: $('#er-title'), test: function (v) { return v.trim().length > 0; } },
+            { el: $('#er-city'), test: function (v) { return v.trim().length > 0; } },
+            { el: $('#er-lieu'), test: function (v) { return v !== ''; } }
+          ];
+          let firstInvalid = null;
+          fields.forEach(function (f) { let ok = f.test(f.el.value); f.el.classList.toggle('is-invalid', !ok); if (!ok && !firstInvalid) { firstInvalid = f.el; } });
+          if (firstInvalid) { firstInvalid.focus(); toast('Merci de compl\u00e9ter les champs obligatoires.', 'error'); return; }
+
+          review.title = $('#er-title').value.trim();
+          review.rating = Number($('#er-rating').value);
+          review.city = $('#er-city').value.trim();
+          review.lieu = $('#er-lieu').value;
+          review.experience = $('#er-experience').value.trim();
+          review.pros = $('#er-pros').value.trim();
+          review.cons = $('#er-cons').value.trim();
+          review.active = $('#er-status').value === 'active';
+          review.images = draftImages.slice();
+          dbPut('reviews', review).then(function () {
+            toast('Avis mis \u00e0 jour.', 'success');
+            announce('Avis mis \u00e0 jour.');
+            draftImages = [];
+            navigate('#/admin');
+          }).catch(function () { toast('Enregistrement impossible.', 'error'); });
+        });
+
+        return Promise.resolve();
+      });
+    }
+
+    /* =====================================================================
+       VUE — ADMIN : MODIFIER UN MEMBRE (coordonnées + rôle + statut)
+       ===================================================================== */
+    function renderEditUser(route) {
+      let id = route.param ? decodeURIComponent(route.param) : null;
+      if (!id) { return renderNotFound(); }
+      return dbGet('users', id).then(function (user) {
+        if (!user) { return renderNotFound(); }
+        let isSelf = user.id === currentUser.id;
+        let isActive = user.active !== false;
+
+        $('#view').innerHTML =
+          '<nav aria-label="Fil d\u2019Ariane" class="mb-3"><ol class="breadcrumb mb-0">' +
+            '<li class="breadcrumb-item"><a href="#/admin">Administration</a></li>' +
+            '<li class="breadcrumb-item active" aria-current="page">Modifier un membre</li>' +
+          '</ol></nav>' +
+          '<section aria-labelledby="view-heading" class="row justify-content-center"><div class="col-12 col-lg-8">' +
+            '<h2 class="h1 view-title mb-2"><i class="bi bi-person-gear me-2" aria-hidden="true"></i>Modifier les coordonn\u00e9es</h2>' +
+            '<p class="lead mb-4">Compte de ' + escapeHtml(user.displayName) + (isSelf ? ' (votre compte)' : '') + '.</p>' +
+            '<form id="edit-user-form" novalidate class="acc-card"><div class="card-body">' +
+              '<div class="mb-3"><label class="form-label" for="u-display">Nom affich\u00e9 <span class="text-danger" aria-hidden="true">*</span></label>' +
+                '<input class="form-control" id="u-display" type="text" required maxlength="60" autocomplete="name" value="' + escapeHtml(user.displayName) + '">' +
+                '<div class="invalid-feedback">Merci d\u2019indiquer un nom affich\u00e9.</div></div>' +
+              '<div class="mb-3"><label class="form-label" for="u-username">Identifiant <span class="text-danger" aria-hidden="true">*</span></label>' +
+                '<input class="form-control" id="u-username" type="text" required maxlength="40" autocomplete="username" value="' + escapeHtml(user.username) + '">' +
+                '<div class="invalid-feedback" id="u-username-err">Merci d\u2019indiquer un identifiant.</div></div>' +
+              '<div class="mb-3"><label class="form-label" for="u-password">Nouveau mot de passe</label>' +
+                '<input class="form-control" id="u-password" type="password" minlength="4" autocomplete="new-password" aria-describedby="u-password-help">' +
+                '<div id="u-password-help" class="form-text">Laissez vide pour conserver le mot de passe actuel. Sinon, 4 caract\u00e8res minimum.</div>' +
+                '<div class="invalid-feedback">Mot de passe trop court (4 caract\u00e8res minimum).</div></div>' +
+              '<div class="row g-3">' +
+                '<div class="col-12 col-md-6"><label class="form-label" for="u-role">R\u00f4le</label>' +
+                  '<select class="form-select" id="u-role"' + (isSelf ? ' disabled' : '') + '>' +
+                    '<option value="user"' + (user.role !== 'admin' ? ' selected' : '') + '>Membre</option>' +
+                    '<option value="admin"' + (user.role === 'admin' ? ' selected' : '') + '>Administrateur</option>' +
+                  '</select>' + (isSelf ? '<div class="form-text">Vous ne pouvez pas modifier votre propre r\u00f4le.</div>' : '') + '</div>' +
+                '<div class="col-12 col-md-6"><label class="form-label" for="u-status">Statut du compte</label>' +
+                  '<select class="form-select" id="u-status"' + (isSelf ? ' disabled' : '') + '>' +
+                    '<option value="active"' + (isActive ? ' selected' : '') + '>Actif</option>' +
+                    '<option value="inactive"' + (!isActive ? ' selected' : '') + '>D\u00e9sactiv\u00e9</option>' +
+                  '</select>' + (isSelf ? '<div class="form-text">Vous ne pouvez pas d\u00e9sactiver votre propre compte.</div>' : '') + '</div>' +
+              '</div>' +
+              '<hr class="divider my-4">' +
+              '<div class="d-flex flex-wrap gap-2">' +
+                '<button type="submit" class="btn btn-acc-primary btn-lg"><i class="bi bi-save me-1" aria-hidden="true"></i>Enregistrer</button>' +
+                '<a href="#/admin" class="btn btn-acc-ghost btn-lg">Annuler</a>' +
+              '</div>' +
+            '</div></form>' +
+          '</div></section>';
+
+        $('#edit-user-form').addEventListener('submit', function (e) {
+          e.preventDefault();
+          let display = $('#u-display').value.trim();
+          let username = $('#u-username').value.trim();
+          let pwd = $('#u-password').value;
+          let dOk = display.length > 0;
+          let uOk = username.length > 0;
+          let pOk = pwd.length === 0 || pwd.length >= 4;
+          $('#u-display').classList.toggle('is-invalid', !dOk);
+          $('#u-username').classList.toggle('is-invalid', !uOk);
+          $('#u-password').classList.toggle('is-invalid', !pOk);
+          if (!dOk || !uOk || !pOk) {
+            if (!dOk) { $('#u-display').focus(); } else if (!uOk) { $('#u-username').focus(); } else { $('#u-password').focus(); }
+            return;
+          }
+          getUserByUsername(username).then(function (existing) {
+            if (existing && existing.id !== user.id) {
+              $('#u-username').classList.add('is-invalid');
+              $('#u-username-err').textContent = 'Cet identifiant est d\u00e9j\u00e0 utilis\u00e9.';
+              toast('Cet identifiant existe d\u00e9j\u00e0.', 'error');
+              $('#u-username').focus();
+              return;
+            }
+            user.displayName = display;
+            user.username = username.toLowerCase();
+            if (pwd.length >= 4) { user.passwordHash = hashStr(pwd); }
+            if (!isSelf) {
+              user.role = $('#u-role').value === 'admin' ? 'admin' : 'user';
+              user.active = $('#u-status').value === 'active';
+            }
+            return dbPut('users', user).then(function () {
+              if (currentUser && currentUser.id === user.id) { currentUser = user; }
+              toast('Coordonn\u00e9es mises \u00e0 jour.', 'success');
+              announce('Coordonn\u00e9es du membre mises \u00e0 jour.');
+              navigate('#/admin');
+            });
+          }).catch(function () { toast('Enregistrement impossible.', 'error'); });
+        });
+
+        return Promise.resolve();
+      });
+    }
+
+    /* =====================================================================
+       AMORÇAGE DES DONNÉES (compte admin + exemples)
+       ===================================================================== */
+    function seedData() {
+      return dbGetAll('users').then(function (users) {
+        let tasks = [];
+        let hasAdmin = (users || []).some(function (u) { return u.role === 'boule'; });
+        if (!hasAdmin) {
+          tasks.push(dbPut('users', {
+            id: 'user-admin-seed',
+            username: 'boule',
+            displayName: 'Administrateur',
+            passwordHash: hashStr('boule123'),
+            role: 'admin',
+            active: true,
+            createdAt: Date.now()
+          }));
+        }
+        return Promise.all(tasks).then(function () { return dbGetAll('reviews'); }).then(function (reviews) {
+          if (reviews && reviews.length) { return; }
+          let demoUser = { id: 'user-demo-seed', username: 'camille', displayName: 'Camille', passwordHash: hashStr('demo1234'), role: 'user', active: true, createdAt: Date.now() };
+          let demos = [
+            { id: 'rev-demo-1', userId: demoUser.id, authorName: 'Camille',
+              title: 'Théâtre municipal : un accueil aux petits soins', rating: 5, city: 'Strasbourg', lieu: 'theatre',
+              experience: 'Places en fauteuil au premier rang, rampe d\u2019accès dès l\u2019entrée et personnel formé qui propose spontanément son aide. Boucle magnétique disponible sur demande.',
+              pros: 'Accès de plain-pied, placement adapté, programme en gros caractères.', cons: 'Toilettes adaptées un peu éloignées de la salle.', images: [], active: true, createdAt: Date.now() - 86400000 * 3 },
+            { id: 'rev-demo-2', userId: demoUser.id, authorName: 'Camille',
+              title: 'Exposition photo : parcours peu lisible pour malvoyants', rating: 2, city: 'Nantes', lieu: 'expo',
+              experience: 'Les cartels sont imprimés en petits caractères gris clair sur fond blanc, sans contraste. Aucun audioguide ni description sonore des \u0153uvres.',
+              pros: 'Espaces larges, circulation aisée en fauteuil.', cons: 'Cartels illisibles, pas d\u2019alternative audio, éclairage faible.', images: [], active: true, createdAt: Date.now() - 86400000 * 1 }
+          ];
+          return dbPut('users', demoUser).then(function () {
+            return Promise.all(demos.map(function (d) { return dbPut('reviews', d); }));
+          });
+        });
+      });
+    }
+
+    /* =====================================================================
+       BOUTON ASCENSEUR + SON (Web Audio créé au 1er clic = pas d'avertissement)
+       ===================================================================== */
+    let audioCtx = null;
+    function ensureAudio() {
+      if (audioCtx) { return audioCtx; }
+      try {
+        let AC = window.AudioContext || window.webkitAudioContext;
+        if (AC) { audioCtx = new AC(); }
+      } catch (e) { audioCtx = null; }
+      return audioCtx;
+    }
+    function playLift(arrival) {
+      let ctx = ensureAudio();
+      if (!ctx) { return; }
+      if (ctx.state === 'suspended' && ctx.resume) { ctx.resume(); }
+      let now = ctx.currentTime;
+      let osc = ctx.createOscillator();
+      let gain = ctx.createGain();
+      osc.type = 'sine';
+      // départ : note grave puis aiguë ; arrivée : « ding » à deux tons
+      if (arrival) {
+        osc.frequency.setValueAtTime(880, now);
+        osc.frequency.setValueAtTime(1320, now + 0.14);
+      } else {
+        osc.frequency.setValueAtTime(440, now);
+        osc.frequency.exponentialRampToValueAtTime(720, now + 0.22);
+      }
+      gain.gain.setValueAtTime(0.0001, now);
+      gain.gain.exponentialRampToValueAtTime(0.12, now + 0.03);
+      gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.4);
+      osc.connect(gain); gain.connect(ctx.destination);
+      osc.start(now); osc.stop(now + 0.42);
+    }
+
+    function initLiftButton() {
+      let btn = $('#lift-btn');
+      if (!btn) { return; }
+      window.addEventListener('scroll', function () {
+        btn.classList.toggle('show', window.scrollY > 400);
+      }, { passive: true });
+      btn.addEventListener('click', function () {
+        playLift(false);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        window.setTimeout(function () { playLift(true); }, 520);
+        let heading = $('#view-heading');
+        if (heading) { window.setTimeout(function () { heading.focus(); }, 650); }
+      });
+    }
+
+    /* =====================================================================
+       INITIALISATION
+       ===================================================================== */
+    function init() {
+      initTheme();
+
+      $('#theme-toggle').addEventListener('click', function () {
+        let current = document.documentElement.getAttribute('data-bs-theme');
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+        announce(current === 'dark' ? 'Mode clair activé.' : 'Mode sombre activé.');
+      });
+
+      $('#btn-logout').addEventListener('click', function () {
+        setSession(null);
+        toast('Vous êtes déconnecté·e.', 'info');
+        announce('Déconnexion effectuée.');
+        updateNav(parseHash().name);
+        navigate('#/accueil');
+        router();
+      });
+
+      initLiftButton();
+
+      window.addEventListener('hashchange', router);
+
+      seedData()
+        .then(loadSession)
+        .then(function () {
+          if (!window.location.hash) { window.location.replace('#/accueil'); }
+          router();
+        })
+        .catch(function (err) {
+          console && console.warn && console.warn(err);
+          $('#view').innerHTML = errorBlock('Le stockage local n\u2019est pas disponible dans ce navigateur.');
+        });
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', init);
+    } else {
+      init();
+    }
+
+  })();
+  </script>
+
+  <!-- 👁️ AJOUT : œil afficher/masquer le mot de passe (formulaires connexion & inscription) -->
+  <script>
+  (function () {
+    'use strict';
+
+    // Styles du bouton « œil » (injectés ici pour ne rien changer au reste du code)
+    let css =
+      '.acc-eye-btn{display:inline-flex;align-items:center;justify-content:center;min-height:2.85rem;' +
+      'padding:.55rem .95rem;border:2px solid var(--acc-border);border-left:0;border-radius:0 .6rem .6rem 0;' +
+      'background:var(--acc-surface-2);color:var(--acc-text);cursor:pointer}' +
+      '.acc-eye-btn:hover,.acc-eye-btn:focus{background:var(--acc-bg-soft);color:var(--acc-text)}' +
+      '.acc-eye-btn .bi{font-size:1.25rem}';
+    let styleEl = document.createElement('style');
+    styleEl.appendChild(document.createTextNode(css));
+    document.head.appendChild(styleEl);
+
+    // Ajoute l'œil au champ mot de passe (#a-password) commun à connexion et inscription
+    function addEye() {
+      let input = document.getElementById('a-password');
+      if (!input || input.dataset.eyeReady === '1') { return; }
+      input.dataset.eyeReady = '1';
+
+      // On enveloppe le champ dans un input-group Bootstrap (préserve la validation native)
+      let group = document.createElement('div');
+      group.className = 'input-group has-validation';
+      input.parentNode.insertBefore(group, input);
+      group.appendChild(input);
+
+      let btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'btn acc-eye-btn';
+      btn.setAttribute('aria-controls', 'a-password');
+      btn.setAttribute('aria-pressed', 'false');
+      btn.setAttribute('aria-label', 'Afficher le mot de passe');
+      btn.innerHTML = '<i class="bi bi-eye" aria-hidden="true"></i>';
+      group.appendChild(btn);
+
+      // Le message d'erreur rejoint le groupe pour que la validation Bootstrap continue de s'afficher
+      let err = document.getElementById('a-password-err');
+      if (err) { group.appendChild(err); }
+
+      btn.addEventListener('click', function () {
+        let reveal = input.type === 'password';
+        input.type = reveal ? 'text' : 'password';
+        btn.setAttribute('aria-pressed', reveal ? 'true' : 'false');
+        btn.setAttribute('aria-label', reveal ? 'Masquer le mot de passe' : 'Afficher le mot de passe');
+        let icon = btn.querySelector('i');
+        if (icon) { icon.className = reveal ? 'bi bi-eye-slash' : 'bi bi-eye'; }
+      });
+    }
+
+    // Les formulaires sont rendus dynamiquement : on observe #view pour agir à chaque affichage
+    let view = document.getElementById('view');
+    if (view) { new MutationObserver(addEye).observe(view, { childList: true }); }
+    addEye(); // au cas où un formulaire serait déjà présent
+  })();
+  </script>
+
+  <!-- 📖 AJOUT : bascule « Lire plus / Lire moins » pour les textes dépliables des cartes -->
+  <script>
+  (function () {
+    'use strict';
+
+    // Style du bouton « Lire plus » (lisible, contrasté, ≥ 1rem, focus visible)
+    let css =
+      '.exp-toggle{display:inline;font:inherit;font-size:1rem;font-weight:700;' +
+      'background:transparent;border:0;padding:0;cursor:pointer;color:var(--acc-link);' +
+      'text-decoration:underline;text-underline-offset:.18em}' +
+      '.exp-toggle:hover,.exp-toggle:focus-visible{color:var(--acc-primary-strong)}' +
+      '.pros-box .exp-toggle{color:var(--acc-pos-text)}' +
+      '.cons-box .exp-toggle{color:var(--acc-neg-text)}';
+    let styleEl = document.createElement('style');
+    styleEl.appendChild(document.createTextNode(css));
+    document.head.appendChild(styleEl);
+
+    // Délégation : un seul écouteur gère tous les boutons, même ceux rendus plus tard
+    document.addEventListener('click', function (e) {
+      let btn = e.target && e.target.closest ? e.target.closest('.js-lire-plus') : null;
+      if (!btn) { return; }
+      let wrap = btn.closest('.exp-text');
+      if (!wrap) { return; }
+      let shortEl = wrap.querySelector('.exp-short');
+      let fullEl = wrap.querySelector('.exp-full');
+      if (!shortEl || !fullEl) { return; }
+      let expanded = btn.getAttribute('aria-expanded') === 'true';
+      if (expanded) {
+        fullEl.hidden = true; shortEl.hidden = false;
+        btn.setAttribute('aria-expanded', 'false');
+        btn.textContent = 'Lire plus';
+      } else {
+        shortEl.hidden = true; fullEl.hidden = false;
+        btn.setAttribute('aria-expanded', 'true');
+        btn.textContent = 'Lire moins';
+      }
+    });
+  })();
+  </script>
+
+  <!-- ═══ DATE & HEURE EN TEMPS RÉEL ═══ -->
+  <script>
+    (function () {
+      'use strict';
+
+      const dateEl  = document.getElementById('datetimeDate');
+      const clockEl = document.getElementById('datetimeClock');
+      if (!dateEl || !clockEl) return;
+
+      const LOCALE   = 'fr-FR';
+      const DATE_FMT = new Intl.DateTimeFormat(LOCALE, {
+        weekday: 'long',
+        day    : 'numeric',
+        month  : 'long',
+        year   : 'numeric'
+      });
+      const TIME_FMT = new Intl.DateTimeFormat(LOCALE, {
+        hour   : '2-digit',
+        minute : '2-digit',
+        second : '2-digit',
+        hour12 : false
+      });
+
+      function tick() {
+        const now = new Date();
+        dateEl.textContent  = DATE_FMT.format(now)
+          .replace(/^./, c => c.toUpperCase()); /* 1re lettre du jour en maj. */
+        clockEl.textContent = TIME_FMT.format(now);
+      }
+
+      tick();                        /* Affichage immédiat au chargement */
+      setInterval(tick, 1000);       /* Mise à jour chaque seconde        */
+
+    })();
+  </script>
+  <!-- ═══ DATE & HEURE EN TEMPS RÉEL ═══ -->
+
+  <!-- ═══ MÉTÉO EN TEMPS RÉEL — OpenWeatherMap ═══ -->
+  <script>
+    (function () {
+      'use strict';
+
+      /* ── Configuration ── */
+      const API_KEY  = 'a98b748d666d3943fe39fb54ad882d9e';
+      const ENDPOINT = 'https://api.openweathermap.org/data/2.5/weather';
+      const REFRESH  = 10 * 60 * 1000; // rafraîchissement toutes les 10 min
+
+      /* ── Éléments DOM ── */
+      const pill    = document.getElementById('weatherPill');
+      const iconEl  = document.getElementById('weatherIcon');
+      const tempEl  = document.getElementById('weatherTemp');
+      const cityEl  = document.getElementById('weatherCity');
+      const dotEl   = document.getElementById('weatherLiveDot');
+      if (!pill || !iconEl || !tempEl || !cityEl) return;
+
+      /* ── Correspondance code OWM → emoji ── */
+      function getEmoji(id, icon) {
+        const night = icon && icon.endsWith('n');
+        if (id < 300) return '⛈️';
+        if (id < 400) return '🌦️';
+        if (id < 511) return '🌧️';
+        if (id < 600) return '🌨️';
+        if (id < 700) return '🌫️';
+        if (id === 800) return night ? '🌙' : '☀️';
+        if (id === 801) return night ? '🌤️' : '🌤️';
+        if (id === 802) return '⛅';
+        return '☁️';
+      }
+
+      /* ── Appel API OpenWeatherMap ── */
+      async function fetchWeather(lat, lon) {
+        const url = `${ENDPOINT}?lat=${lat}&lon=${lon}&units=metric&lang=fr&appid=${API_KEY}`;
+        const r   = await fetch(url);
+        if (!r.ok) throw new Error(`OWM: HTTP ${r.status}`);
+        return r.json();
+      }
+
+      /* ── Mise à jour de l'interface ── */
+      function render(data) {
+        const { weather: [w], main: m, name } = data;
+        const temp  = Math.round(m.temp);
+        const feel  = Math.round(m.feels_like);
+        const desc  = w.description;
+
+        iconEl.textContent = getEmoji(w.id, w.icon);
+        tempEl.textContent = `${temp}°C`;
+        cityEl.textContent = name;
+
+        pill.classList.remove('weather-loading', 'weather-error');
+
+        const title = `${desc.charAt(0).toUpperCase() + desc.slice(1)} · `
+                    + `Ressenti ${feel}°C · Humidité ${m.humidity}%`;
+        pill.title = title;
+        pill.setAttribute('aria-label', `Météo à ${name} : ${title}`);
+
+        console.info(`%c[Météo] ${name} ${temp}°C — ${desc}`,
+          'color:#06b6d4;font-weight:600;');
+      }
+
+      /* ── Affichage d'une erreur ── */
+      function showError(msg) {
+        iconEl.textContent = '⚠️';
+        tempEl.textContent = '--°';
+        cityEl.textContent = 'N/D';
+        pill.classList.remove('weather-loading');
+        pill.classList.add('weather-error');
+        pill.title = msg;
+        pill.setAttribute('aria-label', `Météo indisponible : ${msg}`);
+        console.warn('[Météo TSSR]', msg);
+      }
+
+      /* ── Fallback géolocalisation par IP ──
+           Utilisé si le navigateur refuse l'accès à la position
+           ou si Geolocation n'est pas supporté (fichier local…)   */
+      async function geoByIP() {
+        const r = await fetch('https://ipapi.co/json/');
+        if (!r.ok) throw new Error(`ipapi.co: HTTP ${r.status}`);
+        const { latitude: lat, longitude: lon, city } = await r.json();
+        if (!lat || !lon) throw new Error('Coordonnées IP vides');
+        console.info(`%c[Météo] Géoloc IP : ${city} (${lat.toFixed(2)}, ${lon.toFixed(2)})`,
+          'color:#f59e0b;');
+        return { latitude: lat, longitude: lon };
+      }
+
+      /* ── Chargement principal ── */
+      async function load() {
+        pill.classList.add('weather-loading');
+
+        /* Pas de Geolocation API → fallback immédiat */
+        if (!navigator.geolocation) {
+          try {
+            const { latitude, longitude } = await geoByIP();
+            render(await fetchWeather(latitude, longitude));
+          } catch (e) {
+            showError('Géolocalisation non disponible.');
+          }
+          return;
+        }
+
+        /* Tentative avec la Geolocation du navigateur */
+        navigator.geolocation.getCurrentPosition(
+
+          /* Succès : position précise */
+          async ({ coords: { latitude, longitude } }) => {
+            try {
+              render(await fetchWeather(latitude, longitude));
+            } catch (e) {
+              showError(`Erreur API météo : ${e.message}`);
+            }
+          },
+
+          /* Échec (refus, timeout…) → fallback IP silencieux */
+          async (geoErr) => {
+            console.info('[Météo TSSR] Géoloc navigateur refusée — fallback IP…');
+            try {
+              const { latitude, longitude } = await geoByIP();
+              render(await fetchWeather(latitude, longitude));
+            } catch (e) {
+              const reasons = {
+                1: 'Accès à la position refusé.',
+                2: 'Position introuvable.',
+                3: 'Délai de géolocalisation dépassé.',
+              };
+              showError(reasons[geoErr.code] || 'Erreur de localisation.');
+            }
+          },
+
+          /* Options */
+          { timeout: 8000, maximumAge: 300000, enableHighAccuracy: false }
+        );
+      }
+
+      /* ── Lancement + rafraîchissement automatique ── */
+      load();
+      setInterval(load, REFRESH);
+
+    })();
+  </script>
+  <!-- ═══ MÉTÉO EN TEMPS RÉEL — OpenWeatherMap ═══ -->
+
+  
+
+
+  <!-- ═══════════════════════════════════════════════════════════════════
+       🌐 PATCH : bouton de traduction Français ⇄ Anglais (100 % natif)
+       Ajouté sans modifier une seule ligne du code existant.
+       • Bascule instantanée, sans rechargement, sans lien/API externe.
+       • Couvre l'intégralité du SPA : barre de navigation, pied de page,
+         vues injectées dynamiquement, toasts, fenêtres de confirmation,
+         attributs d'accessibilité (aria-label, title, alt, placeholder),
+         horloge et météo en temps réel.
+       • Zéro erreur en console (tout est protégé et idempotent).
+       ═══════════════════════════════════════════════════════════════════ -->
+  <script>
+  (function () {
+    'use strict';
+
+    /* --------------------------------------------------------------------
+       État + utilitaires
+       -------------------------------------------------------------------- */
+    const LS_LANG = 'cult.lang';
+    let lang = 'fr';
+    try { if (window.localStorage.getItem(LS_LANG) === 'en') { lang = 'en'; } } catch (e) {}
+
+    const origText = new Map();   // nœud texte -> texte FR original
+    let origAttr = [];          // { el, name, value } pour restauration
+    const ATTRS = ['placeholder', 'title', 'aria-label', 'alt', 'aria-roledescription'];
+
+    function normalize(s) {
+      return String(s)
+        .replace(/\u2019/g, "'")
+        .replace(/[\u00a0\u202f]/g, ' ')
+        .replace(/\s+/g, ' ')
+        .trim();
+    }
+    // version « motifs » : apostrophes/espaces insécables normalisés, sans collapse agressif
+    function patStr(s) {
+      return String(s).replace(/\u2019/g, "'").replace(/[\u00a0\u202f]/g, ' ');
+    }
+    function cap(w) { return w ? w.charAt(0).toUpperCase() + w.slice(1) : w; }
+
+    /* --------------------------------------------------------------------
+       Mois / jours (dates temps réel + dates des avis)
+       -------------------------------------------------------------------- */
+    const DATEWORDS = {
+      'janvier': 'January', 'février': 'February', 'mars': 'March', 'avril': 'April',
+      'mai': 'May', 'juin': 'June', 'juillet': 'July', 'août': 'August',
+      'septembre': 'September', 'octobre': 'October', 'novembre': 'November', 'décembre': 'December',
+      'lundi': 'Monday', 'mardi': 'Tuesday', 'mercredi': 'Wednesday', 'jeudi': 'Thursday',
+      'vendredi': 'Friday', 'samedi': 'Saturday', 'dimanche': 'Sunday'
+    };
+    function dateTokens(s) {
+      let changed = false;
+      let out = String(s).replace(/[A-Za-zÀ-ÿ]+/g, function (w) {
+        let lw = w.toLowerCase();
+        if (DATEWORDS.hasOwnProperty(lw)) {
+          changed = true;
+          return (w[0] === w[0].toUpperCase()) ? cap(DATEWORDS[lw]) : DATEWORDS[lw];
+        }
+        return w;
+      });
+      return changed ? out : null;
+    }
+    function fixWeather(s) {
+      return String(s).replace(/Ressenti/g, 'Feels like').replace(/Humidité/g, 'Humidity');
+    }
+
+    /* --------------------------------------------------------------------
+       Dictionnaire exact FR -> EN (clés normalisées, guillemets doubles)
+       -------------------------------------------------------------------- */
+    const DICT = {
+      // En-tête / navigation / pied de page / divers chrome
+      "Aller au contenu principal": "Skip to main content",
+      "Accueil": "Home",
+      "Déposer un avis": "Post a review",
+      "Mon espace": "My space",
+      "Administration": "Administration",
+      "Connexion": "Log in",
+      "Inscription": "Sign up",
+      "Déconnexion (": "Log out (",
+      "Activer le mode sombre": "Switch to dark mode",
+      "Activer le mode clair": "Switch to light mode",
+      "Ouvrir le menu de navigation": "Open the navigation menu",
+      "Navigation principale": "Main navigation",
+      "Date et heure actuelles": "Current date and time",
+      "Date et heure locales": "Local date and time",
+      "Chargement de la météo…": "Loading the weather…",
+      "Localisation en cours…": "Locating…",
+      "Localisation…": "Locating…",
+      "— l'accessibilité racontée par celles et ceux qui la vivent.": "— accessibility as told by the very people who live it.",
+      "Vos données restent dans votre navigateur (LocalStorage & IndexedDB).": "Your data stays in your browser (LocalStorage & IndexedDB).",
+      "Liens de pied de page": "Footer links",
+      "Remonter en haut de la page": "Scroll back to the top of the page",
+      "Remonter en haut": "Back to top",
+      "Fermer la notification": "Close notification",
+      "Afficher le mot de passe": "Show password",
+      "Masquer le mot de passe": "Hide password",
+      "carrousel": "carousel",
+      "Photo précédente": "Previous photo",
+      "Photo suivante": "Next photo",
+
+      // Erreurs / 404 / gardes d'accès
+      "Oups": "Oops",
+      "Une erreur est survenue lors du chargement de la page.": "An error occurred while loading the page.",
+      "Le stockage local n'est pas disponible dans ce navigateur.": "Local storage is not available in this browser.",
+      "Page introuvable": "Page not found",
+      "La page demandée n'existe pas.": "The requested page does not exist.",
+      "Retour à l'accueil": "Back to home",
+      "Veuillez vous connecter pour accéder à cet espace.": "Please log in to access this area.",
+      "Accès réservé à l'administration.": "Access restricted to administrators.",
+
+      // Accueil
+      "Communauté solidaire": "A caring community",
+      "L'accessibilité des lieux de culture, racontée par celles et ceux qui la vivent": "Accessibility of cultural venues, told by the very people who live it",
+      "Partagez votre expérience des théâtres, musées, expositions et autres lieux de culture, ville par ville. Vos retours aident toute la communauté, quel que soit le handicap.": "Share your experience of theatres, museums, exhibitions and other cultural venues, city by city. Your feedback helps the whole community, whatever the disability.",
+      "Créer un compte": "Create an account",
+      "Rechercher un avis": "Search for a review",
+      "Ville": "City",
+      "Type de lieu culturel": "Type of cultural venue",
+      "Tous les lieux": "All venues",
+      "Note minimale": "Minimum rating",
+      "Toutes": "All",
+      "4 ★ et +": "4 ★ and up",
+      "3 ★ et +": "3 ★ and up",
+      "2 ★ et +": "2 ★ and up",
+      "Aucun avis ne correspond à votre recherche pour le moment.": "No review matches your search at the moment.",
+      "Soyez la première personne à témoigner": "Be the first to share",
+      "Aucun avis ne correspond à ces critères.": "No review matches these criteria.",
+
+      // Lieux culturels
+      "Théâtre": "Theatre",
+      "Musée": "Museum",
+      "Exposition": "Exhibition",
+      "Salle de concert / Opéra": "Concert hall / Opera",
+      "Médiathèque / Bibliothèque": "Media library / Library",
+      "Monument / Patrimoine": "Monument / Heritage site",
+      "Galerie d’art": "Art gallery",
+      "Autre lieu culturel": "Other cultural venue",
+      "Autre": "Other",
+
+      // Cartes / détail d'un avis
+      "Les plus": "Pros",
+      "Les moins": "Cons",
+      "Désactivé": "Disabled",
+      "Voir & échanger": "View & discuss",
+      "Lire plus": "Read more",
+      "Lire moins": "Read less",
+      "Supprimer": "Delete",
+      "Aucun commentaire pour l'instant. Lancez l'échange !": "No comments yet. Start the conversation!",
+      "Votre commentaire": "Your comment",
+      "Restez bienveillant·e : nous formons une communauté d'entraide.": "Stay kind: we are a community of mutual support.",
+      "Merci d'écrire un message avant d'envoyer.": "Please write a message before sending.",
+      "Publier": "Publish",
+      "Connectez-vous": "Log in",
+      "pour participer à la discussion.": "to take part in the discussion.",
+      "Fil d'Ariane": "Breadcrumb",
+      "Avis": "Reviews",
+      "Cet avis est": "This review is",
+      "désactivé": "disabled",
+      ": il n'est pas visible par le public.": ": it is not visible to the public.",
+      "Modifier / réactiver": "Edit / re-enable",
+      "Modifier cet avis": "Edit this review",
+      "Mon expérience": "My experience",
+      "Supprimer cet avis": "Delete this review",
+
+      // Déposer / modifier un avis
+      "Décrivez votre expérience d'un lieu de culture (théâtre, musée, exposition, concert…). Vos retours, positifs comme négatifs, sont précieux pour la communauté.": "Describe your experience of a cultural venue (theatre, museum, exhibition, concert…). Your feedback, positive or negative, is valuable to the community.",
+      "Titre de votre avis": "Title of your review",
+      "Merci d'indiquer un titre.": "Please enter a title.",
+      "Note d'accessibilité": "Accessibility rating",
+      "Choisir…": "Choose…",
+      "5 ★ — Parfaitement accessible": "5 ★ — Perfectly accessible",
+      "4 ★ — Très bien": "4 ★ — Very good",
+      "3 ★ — Correct": "3 ★ — Average",
+      "2 ★ — Difficile": "2 ★ — Difficult",
+      "1 ★ — Inaccessible": "1 ★ — Inaccessible",
+      "Merci de donner une note.": "Please give a rating.",
+      "Merci d'indiquer la ville.": "Please enter the city.",
+      "Merci de choisir un type de lieu culturel.": "Please choose a type of cultural venue.",
+      "Votre expérience": "Your experience",
+      "Glissez-déposez": "Drag and drop",
+      "vos images ici": "your images here",
+      "de nouvelles images ici": "new images here",
+      "ou activez cette zone pour parcourir vos fichiers. Plusieurs photos ? Elles deviennent un diaporama à points.": "or activate this area to browse your files. Several photos? They become a dotted slideshow.",
+      "ou activez cette zone pour parcourir vos fichiers. Retirez une image existante avec sa croix. Plusieurs photos forment un diaporama à points.": "or activate this area to browse your files. Remove an existing image with its cross. Several photos form a dotted slideshow.",
+      "Parcourir mes fichiers": "Browse my files",
+      "Sélectionner des images à téléverser": "Select images to upload",
+      "Sélectionner des images à ajouter": "Select images to add",
+      "Publier mon avis": "Publish my review",
+      "Annuler": "Cancel",
+      "Merci de compléter les champs obligatoires.": "Please fill in the required fields.",
+      "Seules les images sont acceptées.": "Only images are accepted.",
+      "Ajouter un commentaire": "Add a comment",
+      "Filtrer les avis": "Filter reviews",
+
+      // Connexion / inscription
+      "Rejoignez la communauté et partagez vos avis.": "Join the community and share your reviews.",
+      "Accédez à votre espace personnel.": "Access your personal space.",
+      "Choisir connexion ou inscription": "Choose log in or sign up",
+      "Nom affiché": "Display name",
+      "Merci d'indiquer un nom affiché.": "Please enter a display name.",
+      "Identifiant": "Username",
+      "Merci d'indiquer un identifiant.": "Please enter a username.",
+      "Mot de passe": "Password",
+      "Au moins 4 caractères. Stocké uniquement dans votre navigateur, sous forme hachée.": "At least 4 characters. Stored only in your browser, in hashed form.",
+      "Mot de passe trop court (4 caractères minimum).": "Password too short (4 characters minimum).",
+      "Créer mon compte": "Create my account",
+      "Se connecter": "Log in",
+      "Compte de démonstration administrateur :": "Administrator demo account:",
+      "Cet identifiant est déjà utilisé.": "This username is already taken.",
+      "Cet identifiant existe déjà.": "This username already exists.",
+      "Identifiant ou mot de passe incorrect.": "Incorrect username or password.",
+      "Ce compte est désactivé. Contactez l'administration.": "This account is disabled. Contact the administration.",
+
+      // Mon espace
+      "Nouvel avis": "New review",
+      "Avis publiés": "Reviews published",
+      "Note moyenne donnée": "Average rating given",
+      "Mes avis": "My reviews",
+      "Vous n'avez pas encore publié d'avis.": "You haven't posted any review yet.",
+      "Déposer mon premier avis": "Post my first review",
+
+      // Administration
+      "Administrateur": "Administrator",
+      "Membre": "Member",
+      "Actif": "Active",
+      "Visible": "Visible",
+      "Modifier": "Edit",
+      "(vous)": "(you)",
+      "Désactiver": "Disable",
+      "Activer": "Enable",
+      "Rétrograder": "Demote",
+      "Promouvoir admin": "Promote to admin",
+      "Aucun utilisateur.": "No user.",
+      "Aucun avis.": "No review.",
+      "Aucun commentaire.": "No comment.",
+      "Gérez les membres, les avis et les échanges de la communauté.": "Manage the community's members, reviews and discussions.",
+      "Membres": "Members",
+      "Commentaires": "Comments",
+      "Villes couvertes": "Cities covered",
+      "Sections d'administration": "Administration sections",
+      "Données": "Data",
+      "Titre": "Title",
+      "Lieu": "Venue",
+      "Auteur": "Author",
+      "Note": "Rating",
+      "Statut": "Status",
+      "Actions": "Actions",
+      "Nom": "Name",
+      "Rôle": "Role",
+      "Message": "Message",
+      "Date": "Date",
+      "Action": "Action",
+      "Liste des avis publiés": "List of published reviews",
+      "Liste des membres": "List of members",
+      "Liste des commentaires": "List of comments",
+      "Sauvegarde et réinitialisation": "Backup and reset",
+      "Exportez toutes les données de la communauté au format JSON, ou réinitialisez la plateforme.": "Export all the community data as JSON, or reset the platform.",
+      "Exporter (JSON)": "Export (JSON)",
+      "Réinitialiser toutes les données": "Reset all data",
+      "Supprimer ce commentaire": "Delete this comment",
+
+      // Admin : confirmations (window.confirm)
+      "Voulez-vous vraiment supprimer cet avis ? Cette action est définitive.": "Do you really want to delete this review? This action is permanent.",
+      "Supprimer ce commentaire ?": "Delete this comment?",
+      "Supprimer ce membre ? Ses avis et commentaires seront aussi supprimés.": "Delete this member? Their reviews and comments will also be deleted.",
+      "Supprimer cet avis et ses commentaires ?": "Delete this review and its comments?",
+      "Réinitialiser TOUTES les données (membres, avis, commentaires) ? Action irréversible.": "Reset ALL data (members, reviews, comments)? Irreversible action.",
+
+      // Admin / éditeurs : toasts & annonces
+      "Avis réactivé (visible).": "Review re-enabled (visible).",
+      "Avis désactivé (masqué au public).": "Review disabled (hidden from the public).",
+      "Avis réactivé.": "Review re-enabled.",
+      "Avis désactivé.": "Review disabled.",
+      "Modification impossible.": "Could not modify.",
+      "Compte réactivé.": "Account re-enabled.",
+      "Compte désactivé (connexion bloquée).": "Account disabled (login blocked).",
+      "Compte désactivé.": "Account disabled.",
+      "Rôle mis à jour.": "Role updated.",
+      "Membre supprimé.": "Member deleted.",
+      "Suppression impossible.": "Could not delete.",
+      "Avis supprimé.": "Review deleted.",
+      "Commentaire supprimé.": "Comment deleted.",
+      "Commentaire publié.": "Comment published.",
+      "Votre commentaire a été publié.": "Your comment has been published.",
+      "Publication impossible.": "Could not publish.",
+      "Export téléchargé.": "Export downloaded.",
+      "Données réinitialisées.": "Data reset.",
+      "Réinitialisation impossible.": "Could not reset.",
+      "Votre avis a été publié. Merci pour la communauté !": "Your review has been published. Thank you for the community!",
+      "Avis publié avec succès.": "Review published successfully.",
+
+      // Modifier un avis
+      "Modifier un avis": "Edit a review",
+      "Modifier l'avis": "Edit the review",
+      "Expérience": "Experience",
+      "Statut de publication": "Publication status",
+      "Visible par le public": "Visible to the public",
+      "Désactivé (masqué)": "Disabled (hidden)",
+      "Enregistrer les modifications": "Save changes",
+      "Voir l'avis": "View the review",
+      "Avis mis à jour.": "Review updated.",
+      "Enregistrement impossible.": "Could not save.",
+
+      // Modifier un membre
+      "Modifier un membre": "Edit a member",
+      "Modifier les coordonnées": "Edit details",
+      "Nouveau mot de passe": "New password",
+      "Laissez vide pour conserver le mot de passe actuel. Sinon, 4 caractères minimum.": "Leave empty to keep the current password. Otherwise, 4 characters minimum.",
+      "Vous ne pouvez pas modifier votre propre rôle.": "You cannot change your own role.",
+      "Statut du compte": "Account status",
+      "Vous ne pouvez pas désactiver votre propre compte.": "You cannot disable your own account.",
+      "Enregistrer": "Save",
+      "Coordonnées mises à jour.": "Details updated.",
+      "Coordonnées du membre mises à jour.": "Member details updated.",
+
+      // Initialisation / déconnexion
+      "Mode clair activé.": "Light mode enabled.",
+      "Mode sombre activé.": "Dark mode enabled.",
+      "Vous êtes déconnecté·e.": "You have been logged out.",
+      "Déconnexion effectuée.": "Logout completed.",
+      "Connexion réussie.": "Login successful.",
+      "Compte créé. Vous êtes connecté·e.": "Account created. You are logged in.",
+      "Connexion refusée : compte désactivé.": "Login refused: account disabled.",
+
+      // Météo : messages d'erreur
+      "Géolocalisation non disponible.": "Geolocation not available.",
+      "Accès à la position refusé.": "Location access denied.",
+      "Position introuvable.": "Location not found.",
+      "Délai de géolocalisation dépassé.": "Geolocation timed out.",
+      "Erreur de localisation.": "Location error.",
+      "N/D": "N/A",
+
+      // Données de démonstration (avis d'exemple)
+      "Tramway T1 : un trajet fluide en fauteuil": "Tram T1: a smooth ride in a wheelchair",
+      "Planchers bas sur toute la ligne, annonces sonores et visuelles à chaque arrêt. J'ai pu monter et descendre sans aide.": "Low floors along the whole line, audio and visual announcements at every stop. I could get on and off without help.",
+      "Accès de plain-pied, espace dédié spacieux, annonces doublées.": "Step-free access, spacious dedicated area, dual announcements.",
+      "Bouton d'ouverture parfois un peu haut.": "Door-open button sometimes a bit high.",
+      "Bus de nuit : éclairage à revoir pour malvoyants": "Night bus: lighting needs work for the visually impaired",
+      "Le contraste des marches est insuffisant et l'éclairage intérieur faible. Difficile de repérer la barre d'appui.": "The step contrast is insufficient and the interior lighting is dim. Hard to find the grab rail.",
+      "Chauffeur attentif et patient.": "Attentive and patient driver.",
+      "Contraste des marches faible, écran d'info peu lisible.": "Low step contrast, hard-to-read info screen."
+    };
+
+    /* --------------------------------------------------------------------
+       Motifs dynamiques (chaînes contenant des variables)
+       Testés sur la chaîne « patStr » (apostrophes/espaces normalisés).
+       -------------------------------------------------------------------- */
+    const PATTERNS = [
+      [/^(\d+) avis partagés?$/, function (m) { let n = +m[1]; return n + (n === 1 ? ' review shared' : ' reviews shared'); }],
+      [/^(\d+) avis trouvés\.$/, function (m) { let n = +m[1]; return n + (n === 1 ? ' review found.' : ' reviews found.'); }],
+      [/^(\d+) commentaires?$/, function (m) { let n = +m[1]; return n + (n === 1 ? ' comment' : ' comments'); }],
+      [/^Échanges \((\d+)\)$/, function (m) { return 'Discussion (' + m[1] + ')'; }],
+      [/^Note : (\d+) sur 5$/, function (m) { return 'Rating: ' + m[1] + ' out of 5'; }],
+      [/^Aller à la photo (\d+) sur (\d+)$/, function (m) { return 'Go to photo ' + m[1] + ' of ' + m[2]; }],
+      [/^Photos de l'avis sur (.+) \((\d+) photos, défilement à votre rythme\)$/, function (m) { return 'Photos of the review about ' + m[1] + ' (' + m[2] + ' photos, scroll at your own pace)'; }],
+      [/^Photo (\d+) de l'avis sur (.+)$/, function (m) { return 'Photo ' + m[1] + ' of the review about ' + m[2]; }],
+      [/^Photo de l'avis sur (.+)$/, function (m) { return 'Photo of the review about ' + m[1]; }],
+      [/^au sujet de l'avis : (.+)$/, function (m) { return 'about the review: ' + m[1]; }],
+      [/^Supprimer l'avis (.+)$/, function (m) { return 'Delete the review ' + m[1]; }],
+      [/^Supprimer (.+)$/, function (m) { return 'Delete ' + m[1]; }],
+      [/^Bonjour (.+), voici vos contributions\.$/, function (m) { return 'Hello ' + m[1] + ', here are your contributions.'; }],
+      [/^Bienvenue, (.+) !$/, function (m) { return 'Welcome, ' + m[1] + '!'; }],
+      [/^Vous avez atteint le maximum de (\d+) photos\.$/, function (m) { return 'You have reached the maximum of ' + m[1] + ' photos.'; }],
+      [/^(\d+) photo\(s\) ajoutée\(s\)\. Total : (\d+)\.$/, function (m) { return m[1] + ' photo(s) added. Total: ' + m[2] + '.'; }],
+      [/^Photo retirée\. Total : (\d+)\.$/, function (m) { return 'Photo removed. Total: ' + m[1] + '.'; }],
+      [/^(\d+) photos : un diaporama à points sera créé automatiquement\.$/, function (m) { return m[1] + ' photos: a dotted slideshow will be created automatically.'; }],
+      [/^Aperçu : (.+)$/, function (m) { return 'Preview: ' + m[1]; }],
+      [/^Retirer la photo (\d+)$/, function (m) { return 'Remove photo ' + m[1]; }],
+      [/^Avis publié par (.+) le (.+)\.$/, function (m) { return 'Review posted by ' + m[1] + ' on ' + (dateTokens(m[2]) || m[2]) + '.'; }],
+      [/^Compte de (.+) \(votre compte\)\.$/, function (m) { return 'Account of ' + m[1] + ' (your account).'; }],
+      [/^Compte de (.+)\.$/, function (m) { return 'Account of ' + m[1] + '.'; }],
+      [/^Photos \(facultatif, (\d+) maximum\)$/, function (m) { return 'Photos (optional, ' + m[1] + ' maximum)'; }],
+      [/^Photos de l'avis \((\d+) maximum\)$/, function (m) { return 'Review photos (' + m[1] + ' maximum)'; }],
+      [/^Météo à (.+) : (.+)$/, function (m) { return 'Weather in ' + m[1] + ': ' + fixWeather(m[2]); }],
+      [/^Météo indisponible : (.+)$/, function (m) { return 'Weather unavailable: ' + m[1]; }],
+      [/^Erreur API météo : (.+)$/, function (m) { return 'Weather API error: ' + m[1]; }],
+      [/^(.+) · Ressenti (\d+)°C · Humidité (\d+)%$/, function (m) { return m[1] + ' · Feels like ' + m[2] + '°C · Humidity ' + m[3] + '%'; }],
+      [/^(\d{1,2}) ([A-Za-zÀ-ÿ.]+) (\d{4})(?: à|,)? (\d{1,2}):(\d{2})$/, function (m) { return m[1] + ' ' + (dateTokens(m[2]) || m[2]) + ' ' + m[3] + ' at ' + m[4] + ':' + m[5]; }],
+      [/^([A-Za-zÀ-ÿ]+) (\d{1,2}) ([A-Za-zÀ-ÿ.]+) (\d{4})$/, function (m) { return cap(dateTokens(m[1]) || m[1]) + ' ' + m[2] + ' ' + (dateTokens(m[3]) || m[3]) + ' ' + m[4]; }]
+    ];
+
+    /* --------------------------------------------------------------------
+       Traduction d'un fragment FR -> EN. Renvoie null si rien à changer.
+       -------------------------------------------------------------------- */
+    function translateCore(core) {
+      let key = normalize(core);
+      if (key === '') { return null; }
+      if (DICT.hasOwnProperty(key)) { return DICT[key]; }
+      let ps = patStr(core);
+      for (let i = 0; i < PATTERNS.length; i++) {
+        let mm = ps.match(PATTERNS[i][0]);
+        if (mm) { return PATTERNS[i][1](mm); }
+      }
+      return dateTokens(core); // ultime recours : noms de mois/jours dans une date
+    }
+    function translateString(raw) {
+      let m = String(raw).match(/^(\s*)([\s\S]*?)(\s*)$/);
+      let core = m[2];
+      let out = translateCore(core);
+      if (out === null || out === undefined) { return null; }
+      return m[1] + out + m[3];
+    }
+
+    /* --------------------------------------------------------------------
+       Application sur le DOM
+       -------------------------------------------------------------------- */
+    function skipEl(el) {
+      if (!el || !el.closest) { return true; }
+      return !!el.closest('script,style,textarea,[data-no-translate]');
+    }
+    function isLive(el) {
+      return !!(el && el.closest && el.closest('[data-i18n-live]'));
+    }
+
+    function translateTextNode(node) {
+      let p = node.parentNode;
+      if (!p || p.nodeType !== 1 || skipEl(p)) { return; }
+      if (origText.has(node)) { return; }
+      let raw = node.nodeValue;
+      if (!raw || !raw.trim()) { return; }
+      let t = translateString(raw);
+      if (t !== null && t !== undefined && t !== raw) {
+        if (!isLive(p)) { origText.set(node, raw); }
+        node.nodeValue = t;
+      }
+    }
+
+    function translateAttrsOf(el) {
+      if (el.nodeType !== 1 || skipEl(el)) { return; }
+      let live = isLive(el);
+      for (let i = 0; i < ATTRS.length; i++) {
+        let name = ATTRS[i];
+        if (!el.hasAttribute(name)) { continue; }
+        let marker = '__i18n_' + name;
+        if (el[marker]) { continue; }
+        let val = el.getAttribute(name);
+        let t = translateString(val);
+        if (t !== null && t !== undefined && t !== val) {
+          if (!live) { origAttr.push({ el: el, name: name, value: val }); el[marker] = true; }
+          el.setAttribute(name, t);
+        }
+      }
+    }
+
+    function translateTree(root) {
+      try {
+        // Attributs
+        if (root.nodeType === 1) { translateAttrsOf(root); }
+        let els = root.querySelectorAll ? root.querySelectorAll('*') : [];
+        for (let i = 0; i < els.length; i++) { translateAttrsOf(els[i]); }
+        // Texte
+        let walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null, false);
+        let n;
+        while ((n = walker.nextNode())) { translateTextNode(n); }
+      } catch (e) { /* on n'interrompt jamais l'app */ }
+    }
+
+    function revertAll() {
+      try {
+        origText.forEach(function (raw, node) { try { node.nodeValue = raw; } catch (e) {} });
+        origText.clear();
+        for (let i = 0; i < origAttr.length; i++) {
+          let a = origAttr[i];
+          try {
+            a.el.setAttribute(a.name, a.value);
+            a.el['__i18n_' + a.name] = false;
+          } catch (e) {}
+        }
+        origAttr = [];
+      } catch (e) {}
+    }
+
+    /* --------------------------------------------------------------------
+       Observateur : maintient la traduction sur les vues injectées
+       -------------------------------------------------------------------- */
+    const observer = new MutationObserver(function () {
+      if (lang !== 'en') { return; }
+      observer.disconnect();
+      translateTree(document.body);
+      connectObserver();
+    });
+    function connectObserver() {
+      try {
+        observer.observe(document.body, {
+          childList: true, subtree: true, characterData: true,
+          attributes: true, attributeFilter: ATTRS
+        });
+      } catch (e) {}
+    }
+
+    function applyEnglish() {
+      observer.disconnect();
+      translateTree(document.body);
+      connectObserver();
+    }
+
+    /* --------------------------------------------------------------------
+       window.confirm : traduit les boîtes de dialogue natives
+       -------------------------------------------------------------------- */
+    const _confirm = window.confirm;
+    window.confirm = function (msg) {
+      if (lang === 'en') {
+        let t = translateString(msg);
+        if (t !== null && t !== undefined) { msg = t; }
+      }
+      return _confirm.call(window, msg);
+    };
+
+    /* --------------------------------------------------------------------
+       Bascule de langue
+       -------------------------------------------------------------------- */
+    function updateButton() {
+      let txt = document.getElementById('lang-toggle-text');
+      let btn = document.getElementById('lang-toggle');
+      if (txt) { txt.textContent = (lang === 'en') ? 'FR' : 'EN'; }
+      if (btn) {
+        btn.setAttribute('aria-label', (lang === 'en') ? 'Repasser en français' : 'Switch to English');
+        btn.setAttribute('title', (lang === 'en') ? 'Repasser en français' : 'Switch to English');
+        btn.setAttribute('aria-pressed', (lang === 'en') ? 'true' : 'false');
+      }
+    }
+    function setLang(next) {
+      if (next === lang) { return; }
+      lang = next;
+      try { window.localStorage.setItem(LS_LANG, lang); } catch (e) {}
+      if (lang === 'en') { applyEnglish(); }
+      else { observer.disconnect(); revertAll(); }
+      updateButton();
+    }
+
+    /* --------------------------------------------------------------------
+       Mise en place de l'interface (bouton + zones « live »)
+       -------------------------------------------------------------------- */
+    function setup() {
+      // Styles du bouton (injectés ici pour ne rien changer au reste du code)
+      let css =
+        '.acc-lang-btn{width:auto;min-width:2.85rem;padding:0 .9rem;border-radius:1.5rem;' +
+        'display:inline-flex;align-items:center;gap:.4rem;font-weight:700;font-size:1rem;' +
+        'letter-spacing:.02em;height:2.85rem}' +
+        '.acc-lang-btn .bi{font-size:1.2rem}' +
+        '.acc-lang-btn:hover,.acc-lang-btn:focus{transform:translateY(-2px) rotate(0deg)}';
+      let styleEl = document.createElement('style');
+      styleEl.appendChild(document.createTextNode(css));
+      document.head.appendChild(styleEl);
+
+      // Marque les zones temps réel : traduites mais jamais mémorisées (auto-rafraîchies)
+      let dtp = document.getElementById('datetimePill');
+      if (dtp) { dtp.setAttribute('data-i18n-live', ''); }
+      let wp = document.getElementById('weatherPill');
+      if (wp) { wp.setAttribute('data-i18n-live', ''); }
+
+      // Bouton dans la barre de navigation, avant le bouton de thème
+      let nav = document.getElementById('primary-nav');
+      if (nav) {
+        let themeBtn = document.getElementById('theme-toggle');
+        let themeLi = themeBtn && themeBtn.closest ? themeBtn.closest('li') : null;
+
+        let li = document.createElement('li');
+        li.className = 'nav-item ms-lg-2 mt-2 mt-lg-0';
+        li.setAttribute('data-no-translate', '');
+
+        let btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'lang-toggle';
+        btn.className = 'icon-btn acc-lang-btn';
+        btn.innerHTML = '<i class="bi bi-translate" aria-hidden="true"></i><span id="lang-toggle-text">EN</span>';
+        btn.addEventListener('click', function () { setLang(lang === 'en' ? 'fr' : 'en'); });
+
+        li.appendChild(btn);
+        if (themeLi && themeLi.parentNode === nav) { nav.insertBefore(li, themeLi); }
+        else { nav.appendChild(li); }
+      }
+
+      updateButton();
+
+      // Applique l'anglais si c'était la langue choisie précédemment
+      if (lang === 'en') { applyEnglish(); }
+      else { connectObserver(); } // connecté en continu, sans effet tant que FR
+    }
+
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', setup);
+    } else {
+      setup();
+    }
+
+  })();
+  </script>
+  <!-- ═══ FIN DU PATCH DE TRADUCTION FR ⇄ EN ═══ -->
+
+</body>
+</html>

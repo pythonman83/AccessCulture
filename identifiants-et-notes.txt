@@ -1,0 +1,42 @@
+AccèsCulture — SPA d'avis d'accessibilité des lieux de culture
+(théâtres, musées, expositions, salles de concert, médiathèques, patrimoine, galeries…)
+
+────────────────────────────────────────────────
+INDÉPENDANCE TOTALE vis-à-vis des deux autres SPA
+────────────────────────────────────────────────
+Chaque application possède son propre espace de stockage local. Aucun conflit possible :
+
+  | Application      | IndexedDB           | Clés localStorage
+  | AccessCity       | AccesCommunauteDB   | acc.session / acc.theme / acc.lang
+  | AccessCine       | CineAccesDB         | cine.session / cine.theme / cine.lang
+  | AccèsCulture     | AccesCultureDB      | cult.session / cult.theme / cult.lang   ← NOUVEAU
+
+Les trois peuvent cohabiter sur le même PC / le même navigateur sans jamais
+se mélanger ni s'écraser.
+
+────────────────────────────────────────────────
+IDENTIFIANTS DE DÉMONSTRATION
+────────────────────────────────────────────────
+Administrateur :
+  boule
+  boule123
+
+Voyageur / membre de démo :
+  camille
+  demo1234
+
+Voyageur créé :
+  jeanclaude.lugo@gmail.com
+  Pythondu83@+
+
+────────────────────────────────────────────────
+FONCTIONS REPRISES À L'IDENTIQUE D'AccessCity-import-export
+────────────────────────────────────────────────
+• Dépôt / consultation / modification d'avis (note, ville, type de lieu, photos)
+• Comptes membres + espace personnel + administration
+• Import / Export JSON (sauvegarde nommée « acces-culture-export.json »)
+• Bouton de traduction FR ⇄ EN intégral (dictionnaire interne, hors-ligne)
+• Date/heure + météo géolocalisée temps réel, bouton ascenseur sonore
+• Thème clair / sombre, accessibilité WCAG (contrastes AA/AAA vérifiés)
+
+Identité visuelle distincte : palette « aubergine théâtral + or » (au lieu du bleu océan).
