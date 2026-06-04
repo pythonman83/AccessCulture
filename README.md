@@ -8,7 +8,7 @@ Application **monopage** (Single Page Application) **100 % côté navigateur** :
 un seul fichier `index.html`, **aucun serveur**, **aucune base de données** à installer. 
 Les données sont stockées localement dans le navigateur (IndexedDB + localStorage).
 
-🔗 **Démonstration en ligne :** <https://pythonman83.github.io/AccessCulture-SPA/>
+🔗 **Démonstration en ligne :** <https://pythonman83.github.io/AccessCulture/>
 
 ---
 
